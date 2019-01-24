@@ -26,17 +26,14 @@ void setup() {
 
 
 void loop (){
-  Serial.println("The com string");
-  Serial.println(com);
-  delay(1000);
   if (Serial.available() > 0) {
     // read the incoming byte:
     com = Serial.readString();
     
     line1 = com.substring(0, 2);
     line2 = com.substring(2, 7);
-    Serial.println(line1);
-    Serial.println(line2);
+//    Serial.println(line1);
+//    Serial.println(line2);
     inputtime=line2.toInt();
     
     if (line1=="xf"){
