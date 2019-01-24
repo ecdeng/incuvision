@@ -31,7 +31,7 @@ void loop (){
     com = Serial.readString();
     
     line1 = com.substring(0, 2);
-    line2 = com.substring(2, 7);
+    line2 = com.substring(2, 7);  
 //    Serial.println(line1);
 //    Serial.println(line2);
     inputtime=line2.toInt();
