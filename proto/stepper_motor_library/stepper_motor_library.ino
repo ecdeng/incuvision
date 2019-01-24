@@ -1,5 +1,6 @@
 #include <Stepper.h>
 
+const int stepsPerRevolution = 200;
 int inputtime = 10;
 String com;
 String line1;
