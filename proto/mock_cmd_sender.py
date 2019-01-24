@@ -8,7 +8,7 @@ print('connecting to server')
 s.connect((HOST, PORT))
 
 print('sending command')
-s.sendall(b'xf1000')
+s.sendall(b'xb1000')
 status = s.recv(1024)
 
 print('command sent with status: ', status)

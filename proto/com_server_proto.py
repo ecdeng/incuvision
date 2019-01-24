@@ -24,17 +24,16 @@ class ComServer:
         while True:
             conn, addr = self.s.accept()
             print('connected to: ', addr)
-            while True:
-                cmd = str(conn.recv(1024))
-                if not cmd:
-                    break
-                print('recieved command:', cmd)
-                cmd = cmd.replace('b', '').replace("'", "")
-                if self.motor_control.verify_cmd(cmd):
-                    self.motor_control.exec_cmd(cmd)
-                    conn.sendall(b'Executed Command')
-                else:
-                    conn.sendall(b'Invalid command')
+            cmd = str(conn.recv(1024))
+            if not cmd:
+                break
+            print('recieved command:', cmd)
+            cmd = cmd[2:-1]
+            if self.motor_control.verify_cmd(cmd):
+                self.motor_control.exec_cmd(cmd)
+                conn.sendall(b'Executed Command')
+            else:
+                conn.sendall(b'Invalid command')
             print('broke connection with: ', addr)
             conn.close()
 
