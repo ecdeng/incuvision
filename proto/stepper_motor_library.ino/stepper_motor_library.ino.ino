@@ -1,13 +1,11 @@
 #include <Stepper.h>
 
-// change this to fit the number of steps per revolution for your motor
-const int stepsPerRevolution = 200;
 int inputtime = 10;
 String com;
 String line1;
 String line2;
 
-// initialize the stepper library on pins 8 through 11:
+// initialize the stepper library on appropriate pins
 Stepper stepperX(stepsPerRevolution, 3, 4);
 Stepper stepperY(stepsPerRevolution, 8, 9);
 
@@ -25,30 +23,39 @@ void loop() {
     // reading the incoming byte:
     com = Serial.readString();
 
+    Serial.println(com);
+
     line1 = com.substring(0, 2);
     line2 = com.substring(2, 7);
 
+    Serial.println(line1);
+    Serial.println(line2);
+
     inputtime = line2.toInt();
 
-    if(line1=='xf') {
+    if(line1=="xf") {
+      // rotate motor X clockwise by inputtime
       Serial.println("In xf and making pulses");
       stepperX.step(inputtime);
       delay(500);
     }
 
-    if(line1 == 'xb') {
+    if(line1 == "xb") {
+      // rotate motor X counterclockwise by inputtime
       Serial.println("In xb and making pulses");
       stepperX.step(-inputtime);
       delay(500);
     }
 
-    if(line1 == 'yf') {
+    if(line1 == "yf") {
+      // rotate motor Y clockwise by inputtime
       Serial.println("In yf and making pulses");
       stepperY.step(inputtime);
       delay(500);
     }
 
-    if(line1 == 'yb') {
+    if(line1 == "yb") {
+      // rotate motor Y counterclockwise by inputtime
       Serial.println("In yb and making pulses");
       stepperY.step(-inputtime);
       delay(500);
@@ -59,13 +66,4 @@ void loop() {
   }
   
   delay(1);
-//  // step one revolution in one direction:
-//  Serial.println("clockwise");
-//  myStepper.step(stepsPerRevolution);
-//  delay(500);
-//
-//  // step one revolution in the other direction:
-//  Serial.println("counterclockwise");
-//  myStepper.step(-stepsPerRevolution);
-//  delay(500);
 }
