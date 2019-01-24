@@ -6,8 +6,8 @@ String line1;
 String line2;
 
 // initialize the stepper library on appropriate pins
-Stepper stepperX(stepsPerRevolution, 3, 4);
-Stepper stepperY(stepsPerRevolution, 8, 9);
+Stepper stepperX(200, 3, 4);
+Stepper stepperY(200, 8, 9);
 
 void setup() {
   // set the speed at x rpm:
