@@ -4,20 +4,15 @@ sio = socketio.Client()
 
 @sio.on('connect')
 def on_connect():
-    print('connection established')
+    print('connected')
 
-@sio.on('message')
-def on_message(data):
-    print('message received: ', data)
-    sio.emit('response', {'response': 'python received msg'})
-
-@sio.on('motor1')
-def on_motor1():
-    run_the_motors()
+@sio.on('move')
+def on_move(data):
+    print('move: ', data)
 
 @sio.on('disconnect')
 def on_disconnect():
-    print('disconnected from server')
+    print('disconnected')
 
 sio.connect('http://localhost:3000')
 sio.wait()

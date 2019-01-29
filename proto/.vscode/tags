@@ -1,0 +1,37 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ComServer	com_server_proto.py	/^class ComServer:$/;"	kind:class	line:7
+HOST	com_server_proto.py	/^HOST = '127.0.0.1'$/;"	kind:variable	line:4
+HOST	comm_handel_proto.py	/^HOST = "127.0.0.1"$/;"	kind:variable	line:3
+HOST	mock_cmd_sender.py	/^HOST = '127.0.0.1'$/;"	kind:variable	line:3
+MotorController	com_server_proto.py	/^from move_motor import MotorController$/;"	kind:namespace	line:2
+MotorController	move_motor.py	/^class MotorController:$/;"	kind:class	line:4
+PORT	com_server_proto.py	/^PORT = 42042$/;"	kind:variable	line:5
+PORT	comm_handel_proto.py	/^PORT = 42042$/;"	kind:variable	line:4
+PORT	mock_cmd_sender.py	/^PORT = 42042$/;"	kind:variable	line:4
+__init__	com_server_proto.py	/^    def __init__(self, host, port):$/;"	kind:member	line:10
+__init__	move_motor.py	/^    def __init__(self, port, bps):$/;"	kind:member	line:6
+com_server_proto.py	com_server_proto.py	1;"	kind:file	line:1
+comm_handel_proto.py	comm_handel_proto.py	1;"	kind:file	line:1
+exec_cmd	move_motor.py	/^    def exec_cmd(self, command):$/;"	kind:member	line:27
+main	move_motor.py	/^def main():$/;"	kind:function	line:34
+mock_cmd_sender.py	mock_cmd_sender.py	1;"	kind:file	line:1
+move_motor.py	move_motor.py	1;"	kind:file	line:1
+s	comm_handel_proto.py	/^s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)$/;"	kind:variable	line:6
+s	mock_cmd_sender.py	/^s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)$/;"	kind:variable	line:6
+serial	move_motor.py	/^import serial$/;"	kind:namespace	line:1
+server	com_server_proto.py	/^server = ComServer(HOST, PORT)$/;"	kind:variable	line:43
+sleep	move_motor.py	/^from time import sleep$/;"	kind:namespace	line:2
+socket	com_server_proto.py	/^import socket$/;"	kind:namespace	line:1
+socket	comm_handel_proto.py	/^import socket$/;"	kind:namespace	line:1
+socket	mock_cmd_sender.py	/^import socket$/;"	kind:namespace	line:1
+start	com_server_proto.py	/^    def start(self):$/;"	kind:member	line:16
+start	move_motor.py	/^    def start(self):$/;"	kind:member	line:11
+status	mock_cmd_sender.py	/^status = s.recv(1024)$/;"	kind:variable	line:12
+stop	com_server_proto.py	/^    def stop(self):$/;"	kind:member	line:40
+stop	move_motor.py	/^    def stop(self):$/;"	kind:member	line:31
+verify_cmd	move_motor.py	/^    def verify_cmd(self, command):$/;"	kind:member	line:17
