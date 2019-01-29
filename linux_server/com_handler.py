@@ -81,8 +81,10 @@ def on_move(data):
     moves = convertMoveCmd(delta)
 
     # send the move to the arduino
-    print(controller.exec_cmd(moves[0]))
-    print(controller.exec_cmd(moves[1]))
+    if controller.exec_cmd(moves[0]) == const.ARDUINO_BAD_RESP:
+        sio.send(const.BAD_ARDUINO_RESP_ERROR)
+    if controller.exec_cmd(moves[1]) == const.ARDUINO_BAD_RESP:
+        sio.send(const.BAD_ARDUINO_RESP_ERROR)
     curr_point = new_point
     sio.send(const.FINISHED_WITH_NO_ERRORS_RESP)
     print('on_move finished with no errors')

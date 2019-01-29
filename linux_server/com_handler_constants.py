@@ -9,9 +9,10 @@ DISCONNECT_ROUTE = "disconnect"
 CURR_POINT_PARAM = "curr"
 NEW_POINT_PARAM = "new"
 SERVER_ADDRESS = "http://localhost:3000"
-INVALID_POINT_ERROR = "Error: invalid point"
+INVALID_POINT_ERROR = "Error: Invalid point"
 OUT_OF_SYNC_ERROR = "Error: Current point is out of sync with the linux server"
-INVALID_MOVE_ERROR = "Error: invalid move"
+INVALID_MOVE_ERROR = "Error: Invalid move"
+BAD_ARDUINO_RESP_ERROR = "Error: Arduino responded with failure"
 FINISHED_WITH_NO_ERRORS_RESP = "Finished with no errors"
 
 # arduino interface constants
