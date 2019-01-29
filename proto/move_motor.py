@@ -31,11 +31,15 @@ class MotorController:
     def stop(self):
         self.ser.close()
 
-# motor_controller = MotorController('com3', 9600)
-# motor_controller.start()
-# motor_controller.exec_cmd('xf1000')
-# motor_controller.exec_cmd('xb1000')
-# motor_controller.exec_cmd('yf1000')
-# motor_controller.stop()
+def main():
+    motor_controller = MotorController('com3', 9600)
+    motor_controller.start()
+    motor_controller.exec_cmd('xf1000')
+    motor_controller.exec_cmd('xb1000')
+    motor_controller.exec_cmd('yf1000')
+    motor_controller.stop()
 
-# print('program terminated')
+    print('program terminated')
+
+if __name__ == '__main__':
+    main()
