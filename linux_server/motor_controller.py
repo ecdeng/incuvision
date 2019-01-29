@@ -7,26 +7,19 @@ class MotorController:
         self.port = port
         self.bps = bps
         self.poss_dirs = {'xf', 'xb', 'yf', 'yb', 'zf', 'zb'}
-    
+
+    # initiate communication with the arduino
     def start(self):
         print('starting motor controller')
         self.ser = serial.Serial(self.port, self.bps)
         sleep(2)
         print('motor controller running')
 
-    def verify_cmd(self, command):
-        command = str(command)
-        dir = command[:2]
-        amt = int(command[2:])
-        if dir not in self.poss_dirs:
-            return False
-        if amt < 0 or amt > 1e5:
-            return False
-        return True
-
+    # send command to arduino and return the response
     def exec_cmd(self, command):
         self.ser.write(command.encode())
         sleep(5)
+        return self.ser.readline()
 
     def stop(self):
         self.ser.close()

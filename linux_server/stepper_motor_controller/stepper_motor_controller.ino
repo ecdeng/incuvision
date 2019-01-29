@@ -29,31 +29,30 @@ void loop() {
 
     if(line1=="xf") {
       // rotate motor X clockwise by inputtime
-      Serial.println("xclw");
       stepperX.step(inputtime);
       delay(500);
-      Serial.println("xclw-done");
+      Serial.println("ok");
     }
-    if(line1 == "xb") {
+    else if(line1 == "xb") {
       // rotate motor X counterclockwise by inputtime
-      Serial.println("xccw");
       stepperX.step(-inputtime);
       delay(500);
-      Serial.println("xccw-done");
+      Serial.println("ok");
     }
-    if(line1 == "yf") {
+    else if(line1 == "yf") {
       // rotate motor Y clockwise by inputtime
-      Serial.println("yclw");
       stepperY.step(inputtime);
       delay(500);
-      Serial.println("yclw-done");
+      Serial.println("ok");
     }
-    if(line1 == "yb") {
+    else if(line1 == "yb") {
       // rotate motor Y counterclockwise by inputtime
-      Serial.println("yccw");
       stepperY.step(-inputtime);
       delay(500);
-      Serial.println("yccw-done");
+      Serial.println("ok");
+    }
+    else {
+      Serial.println("bad");
     }
     inputtime = 0;
   }

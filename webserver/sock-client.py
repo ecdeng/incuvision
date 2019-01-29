@@ -1,4 +1,5 @@
 import socketio
+from move_motor import MotorController
 
 sio = socketio.Client()
 
