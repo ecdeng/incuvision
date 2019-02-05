@@ -4,7 +4,10 @@ from motor_controller import MotorController
 
 class ComHandler:
     # The constructor also starts the server
-    def __init__(self):
+    def __init__(self, testing):
+        if testing is True:
+            return
+
         # initilize everything
         self.curr_point = None
         self.controller = MotorController(const.COM_PORT, const.ARDUINO_BPS)
@@ -42,7 +45,7 @@ class ComHandler:
             if delta[0] > const.MOTOR_MAX_MOVE or delta[1] > const.MOTOR_MAX_MOVE:
                 self.sio.send(const.INVALID_MOVE_ERROR)
                 return
-            moves = self.convertMoveCmd(delta)
+            moves = self.convert_move_cmd(delta)
 
             # send the move to the arduino
             if self.controller.exec_cmd(moves[0]) == const.ARDUINO_BAD_RESP:
@@ -67,9 +70,10 @@ class ComHandler:
         assert(type(s) is str)
         if len(s) <= 2 or s[0] != '(' or s[-1] != ')':
             return False
+        s = s[1:-1]
         for substr in s.split(','):
-            substr = substr.trim()
-            if len(substr) == 0:
+            substr = substr.strip()
+            if len(substr) == 0 or len(substr) > 7:
                 return False
             if substr[0] == '-':
                 if not substr[1:].isdigit():
@@ -90,17 +94,17 @@ class ComHandler:
     # Converts a point represented as a string to a tuple
     def str_to_tuple(self, s):
         point_str = s[1:-1].split(',')
-        point = (int(point_str[0].trim()), int(point_str[0].trim()))
+        point = (int(point_str[0].strip()), int(point_str[1].strip()))
         return point
 
     # Converts a move command to an Arduino Command
-    def convertMoveCmd(self, move):
+    def convert_move_cmd(self, move):
         x_move_str = ('xf' if move[0] > 0 else 'xb') + (str(abs(move[0])))
         y_move_str = ('yf' if move[1] > 0 else 'yb') + (str(abs(move[1])))
         return x_move_str, y_move_str
 
 def main():
-    com_handler = ComHandler()
+    ComHandler(False)
 
 if __name__ == '__main__':
     main()

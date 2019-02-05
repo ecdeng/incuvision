@@ -24,5 +24,8 @@ class TestMotorController(unittest.TestCase):
     def test_invalid_cmd_too_big(self):
         self.assertFalse(self.controller.valid_cmd('yf10000000000'))
 
+    def test_ivnalid_cmd_empty(self):
+        self.assertFalse(self.controller.valid_cmd(''))
+
 if __name__ == '__main__':
     unittest.main()
