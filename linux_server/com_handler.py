@@ -93,6 +93,7 @@ def on_move(data):
 def on_disconnect():
     print('disconnected')
 
+# connect to the socket
 sio.connect(const.SERVER_ADDRESS)
 sio.wait()
 controller.stop()
