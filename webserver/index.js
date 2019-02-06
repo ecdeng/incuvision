@@ -2,11 +2,9 @@ const express = require('express')
 const app = express();
 const http = require('http');
 
-
 //Express app setup
 const routes = require('./routes');
 app.use('/', routes);
-// app.use(express.static(__dirname + '/public'));
 
 //Server setup
 let port = process.env.PORT;
@@ -15,24 +13,41 @@ if (port == null  || port == "") {
 }
 const server = http.createServer(app);
 
-//Websocket server setup
+//WebSocket server setup
 const io = require('socket.io')(server);
-io.path('/socket');
 
 io.on('connection', function(socket){
-  console.log(`new connection`);
-
-  socket.on('message', function(msg){
-    let usr = socket.client.id;
-    console.log(msg);
-    io.emit('message', `${usr}: ${msg}`);
-  });
-
-  socket.on('response', (msg) => {
-    console.log(`python client: ${msg.response}`);
-  });
+  console.log(`new connection: ${socket.id}`);
   
-  io.emit('runMotor1')
+  socket.on('message', (msg) => {
+    let date = new Date();
+    let time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+    let message = `${date.toLocaleTimeString()} $: ${msg}`;
+    io.emit('message', message);
+    console.log(message);
+  });
+
+  //python client events
+  socket.on('python-client-connected', (msg) => {
+    console.log(msg);
+    io.emit('message', msg);
+  });
+
+  //web client events
+  socket.on('web-client-connected', (msg) => {
+    console.log(msg);
+  });
+
+  socket.on('web-command', (msg) =>{
+    console.log('received web-command');
+    console.log(`emitting move-command: ${msg}`);
+    io.emit('move-command', msg);
+  });
+
+  //all socket events
+  socket.on('disconnect', () => {
+    console.log(`disconnected: ${socket.id}`);
+  });
 });
 
 server.listen(port, () => {
