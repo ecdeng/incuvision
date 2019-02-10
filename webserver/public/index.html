@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Incuvision Control Panel</title>
+        <link rel="stylesheet" type="text/css" href="./index.css">
+    </head>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+    $(function () {
+        var socket = io();
+        $('form').submit(function(){
+            socket.emit('message', $('#m').val());
+            $('#m').val('');
+            return false;
+        });
+        socket.on('message', function(msg){
+            $('#messages').append($('<li>').text(msg));
+            const messages = document.querySelector('#messages');
+            messages.scrollTop = messages.scrollHeight;
+        });
+
+        webCommand = (dir) => {
+            socket.emit('web-command', dir);
+        }
+    });
+    </script>
+    
+    <body>
+        <div class="console">
+            <ul id="messages"></ul>
+            <form action="">
+                <input id="m" autocomplete="off" /><button>Send</button>
+            </form>
+        </div>
+        <div class="buttons">
+            <div class="button red" onclick="webCommand('left')">LEFT</div>
+            <div class="button blue" onclick="webCommand('right')">RIGHT</div>
+            <div class="button green" onclick="webCommand('up')">UP</div>
+            <div class="button yellow" onclick="webCommand('down')">DOWN</div>
+        </div>
+    </body>
+</html>

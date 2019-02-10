@@ -5,10 +5,10 @@ const routes = express();
 
 //for handling JSON data in routes
 routes.use(bodyParser.json());
-
+routes.use(express.static(__dirname + '/public'));
 
 routes.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile('index.html');
 });
 
 routes.get('/authCallback', (req, res) => {
