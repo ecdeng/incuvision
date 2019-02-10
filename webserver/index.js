@@ -2,6 +2,7 @@ const express = require('express')
 const app = express();
 const http = require('http');
 
+import { newFunction } from "./utils";
 
 //Express app setup
 const routes = require('./routes');
@@ -25,7 +26,7 @@ io.on('connection', function(socket){
   socket.on('message', function(msg){
     let usr = socket.client.id;
     console.log(msg);
-    io.emit('message', `${usr}: ${msg}`);
+    io.emit('move', msg);
   });
 
   socket.on('response', (msg) => {

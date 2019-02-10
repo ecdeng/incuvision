@@ -4,27 +4,28 @@ from motor_controller import MotorController
 
 class ComHandler:
     # The constructor also starts the server
-    def __init__(self, testing):
-        if testing is True:
-            return
+    def __init__(self, conn_arduino, con_server):
 
         # initilize everything
+        if conn_arduino:
+            self.controller = MotorController(const.COM_PORT, const.ARDUINO_BPS)
+            self.controller.start()
+        if not con_server:
+            return
         self.curr_point = None
-        self.controller = MotorController(const.COM_PORT, const.ARDUINO_BPS)
-        self.controller.start()
         self.sio = socketio.Client()
 
         @self.sio.on(const.CON_ROUTE)
         def on_connect():
             print('connected')
 
-        # move handeler (TODO @rdiersing1: respond to the server)
+        # move handeler defines all routes for server communicaiton
         @self.sio.on(const.MOVE_ROUTE)
         def on_move(data):
-            global curr_point
 
             # parse the move data recieved from the web-server
             print('on_move triggered, data: ', data)
+            return
             old_point_str = data[const.NEW_POINT_PARAM]
             if not self.point_is_valid(old_point_str):
                 self.sio.send(const.INVALID_POINT_ERROR)
@@ -52,7 +53,7 @@ class ComHandler:
                 self.sio.send(const.BAD_ARDUINO_RESP_ERROR)
             if self.controller.exec_cmd(moves[1]) == const.ARDUINO_BAD_RESP:
                 self.sio.send(const.BAD_ARDUINO_RESP_ERROR)
-            curr_point = new_point
+            self.curr_point = new_point
             self.sio.send(const.FINISHED_WITH_NO_ERRORS_RESP)
             print('on_move finished with no errors')
 
@@ -61,9 +62,11 @@ class ComHandler:
             print('disconnected')
 
         # connect to the socket
-        self.sio.connect(const.SERVER_ADDRESS)
-        self.sio.wait()
-        self.controller.stop()
+        if con_server:
+            self.sio.connect(const.SERVER_ADDRESS)
+            self.sio.wait()
+        if conn_arduino:
+            self.controller.stop()
 
     # Checks if the point string is valid
     def point_is_valid(self, s):
@@ -104,7 +107,7 @@ class ComHandler:
         return x_move_str, y_move_str
 
 def main():
-    ComHandler(False)
+    ComHandler(False, True)
 
 if __name__ == '__main__':
     main()
