@@ -1,16 +1,16 @@
 const express = require('express')
 const app = express();
+
 const http = require('http');
 
 //Express app setup
 const routes = require('./routes');
 app.use('/', routes);
+app.use(express.static(__dirname + '/public'));
 
 //Server setup
-let port = process.env.PORT;
-if (port == null  || port == "") {
-  port = 3000;
-}
+let port = process.env.PORT || 3000;
+
 const server = http.createServer(app);
 
 //WebSocket server setup

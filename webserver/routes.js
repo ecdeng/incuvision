@@ -1,22 +1,55 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken')
+const expressjwt = require('express-jwt');
 
-const routes = express();
+const auth = require('./authservice');
 
-//for handling JSON data in routes
-routes.use(bodyParser.json());
-routes.use(express.static(__dirname + '/public'));
+const router = express.Router();
 
-routes.get('/', (req, res) => {
-    res.sendFile('index.html');
+//for handling JSON data in router
+router.use(bodyParser.json());
+
+//redirect if the client doesn't provide a valid auth token
+const routeVerify = function(req, res, next) {
+    let options = {
+        issuer: 'Incuvision Authorization Service',
+        subject: req.body.userId,
+        audience: 'http://localhost'
+    }
+    if (auth.verify(req.body.authToken, options) || req.url === "/login") {
+        return next();
+    }
+    res.redirect('/login');
+}
+
+const log = function(req, res, next) {
+    let date = new Date();
+    console.log("Request made to url " + req.url + " at time " + date.toLocaleTimeString());
+    next();
+}
+router.use(routeVerify);
+router.use(log);
+
+router.get('/', (req, res) => {
+    res.sendFile('test.html', {root: __dirname+'/public'});
+    // res.send('index');
 });
 
-routes.get('/authCallback', (req, res) => {
-    res.send(req.url);
+router.get('/login', (req, res) => {
+    res.send('404: Not found!');
 });
 
-routes.get('/test', (req, res) => {
+router.post('/api/login', (req, res) => {
+    if (authenticate(req.user)) {
+        let authToken = auth.sign({email: req.user.email, userId: req.user.userId});
+        res.send(authToken);
+    }
+});
+
+router.get('/test', (req, res) => {
     console.log('/test route requested.');
+    res.send("test!");
 });
 
-module.exports = routes;
+module.exports = router;
