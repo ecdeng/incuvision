@@ -2,8 +2,9 @@
 
 1. Install the LTS version of Node (from https://nodejs.org/en/download/)
 2. Install the server's dependencies by running `npm install`
+  - Also recommended: install nodemon with `npm install -g nodemon`, since the `npm start` script runs with nodemon.
 3. Run the server with the command `npm start`
-  - This script can be modified in `package.json`, but it currently runs `node ./src/index.js`.
+  - This script can be modified in `package.json`, but it currently runs `nodemon ./src/server.js`.
 
 # Deployment Instructions
 
