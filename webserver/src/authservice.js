@@ -13,7 +13,7 @@ const auth = {
       subject:  options.subject,
       audience:  options.audience,
       expiresIn:  "30d",    // 30 days validity
-      algorithm:  "RS512"
+      algorithm:  "RS256"
     };
     return jwt.sign(payload, privateKey, signOptions);
   },
@@ -25,7 +25,7 @@ const auth = {
       subject:  options.subject,
       audience:  options.audience,
       expiresIn:  "30d",
-      algorithm:  ["RS512"]
+      algorithm:  ["RS256"]
     };
     try{
       return jwt.verify(token, publicKey, verifyOptions);

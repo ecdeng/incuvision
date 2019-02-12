@@ -17,7 +17,7 @@ const routeVerify = function(req, res, next) {
         subject: req.body.userId,
         audience: 'http://localhost'
     }
-    if (auth.verify(req.body.authToken, options) || req.url === "/login") {
+    if (auth.verify(req.query.authToken, options)) {
         return next();
     }
     res.redirect('/login');
@@ -28,16 +28,27 @@ const log = function(req, res, next) {
     console.log("Request made to url " + req.url + " at time " + date.toLocaleTimeString());
     next();
 }
-router.use(routeVerify);
 router.use(log);
 
-router.get('/', (req, res) => {
+router.get('/', routeVerify, (req, res) => {
     res.sendFile('test.html', {root: __dirname+'/public'});
     // res.send('index');
 });
 
 router.get('/login', (req, res) => {
-    res.send('404: Not found!');
+    res.sendFile('tokenstore.html', {root: __dirname+'/public'});
+});
+
+router.post('/create', (req, res) => {
+    let options = {
+        issuer: 'Incuvision Authorization Service',
+        subject: 'reed',
+        audience: 'http://localhost'
+    }
+    let payload = {name: "reed"};
+    let newToken = auth.sign(payload, options);
+    console.log("token: " + newToken);
+    res.send(newToken.replace(" ", ""));
 });
 
 router.post('/api/login', (req, res) => {
