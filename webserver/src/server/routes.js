@@ -1,23 +1,20 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const jwt = require('jsonwebtoken')
-const expressjwt = require('express-jwt');
-
-const auth = require('./authservice');
+const jwtservice = require('../api/JWTService');
 
 const router = express.Router();
 
 //for handling JSON data in router
 router.use(bodyParser.json());
 
-//redirect if the client doesn't provide a valid auth token
+//redirect if the client doesn't provide a valid jwtservice token
 const routeVerify = function(req, res, next) {
     let options = {
-        issuer: 'Incuvision Authorization Service',
+        issuer: 'Incuvision jwtserviceorization Service',
         subject: req.body.userId,
         audience: 'http://localhost'
     }
-    if (auth.verify(req.query.authToken, options)) {
+    if (jwtservice.verify(req.query.jwtserviceToken, options)) {
         return next();
     }
     res.redirect('/login');
@@ -41,20 +38,20 @@ router.get('/login', (req, res) => {
 
 router.post('/create', (req, res) => {
     let options = {
-        issuer: 'Incuvision Authorization Service',
+        issuer: 'Incuvision jwtserviceorization Service',
         subject: 'reed',
         audience: 'http://localhost'
     }
     let payload = {name: "reed"};
-    let newToken = auth.sign(payload, options);
+    let newToken = jwtservice.sign(payload, options);
     console.log("token: " + newToken);
     res.send(newToken.replace(" ", ""));
 });
 
 router.post('/api/login', (req, res) => {
-    if (authenticate(req.user)) {
-        let authToken = auth.sign({email: req.user.email, userId: req.user.userId});
-        res.send(authToken);
+    if (jwtserviceenticate(req.user)) {
+        let jwtserviceToken = jwtservice.sign({email: req.user.email, userId: req.user.userId});
+        res.send(jwtserviceToken);
     }
 });
 

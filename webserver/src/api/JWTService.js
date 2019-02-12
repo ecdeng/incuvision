@@ -2,10 +2,10 @@ const fs = require('fs');
 const jwt = require('jsonwebtoken');
 
 // use 'utf8' to get string instead of byte array  (512 bit key)
-var privateKey = fs.readFileSync('./private.key', 'utf8');
-var publicKey  = fs.readFileSync('./public.key', 'utf8');  
+var privateKey = fs.readFileSync(__dirname + '/private.key', 'utf8');
+var publicKey  = fs.readFileSync(__dirname + '/public.key', 'utf8');  
 
-const auth = {
+const jwtservice = {
  sign: (payload, options) => {
     // Token signing options
     var signOptions = {
@@ -40,4 +40,4 @@ const auth = {
   }
 }
 
-module.exports = auth;
+module.exports = jwtservice;
