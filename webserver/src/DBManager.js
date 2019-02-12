@@ -7,7 +7,10 @@ var sequelize = new Sequelize('incuvision', 'root', '', {
 });
 
 var models = [
-    'User'
+		'User',
+		'Experiment',
+		'Image',
+		'Position'
 ];
 
 var modelObj = {};

@@ -8,7 +8,11 @@ const fs = require('fs');
 const util = require('../middleware');
 const auth = require('../Authentication');
 const passport = require('../PassportConfig');
-const userRoutes = require('./UserRoutes.js').router;
+const UserRoutes = require('./UserRoutes.js').router;
+const ExperimentRoutes = require('./ExperimentRoutes.js').router;
+const PositionRoutes = require('./PositionRoutes.js').router;
+const ImageRoutes = require('./ImageRoutes.js').router;
+
 
 // Express Router object (mounted in index.js)
 const router = express.Router();
@@ -28,7 +32,10 @@ router.use(passport.initialize());
 router.use(passport.session());
 
 // API routes
-router.use('/user', userRoutes);
+router.use('/users', UserRoutes);
+router.use('/experiments', ExperimentRoutes);
+router.use('/positions', PositionRoutes);
+router.use('/images', ImageRoutes);
 
 // Index route
 router.get('/', auth.required, (req, res) => {

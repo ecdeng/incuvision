@@ -13,7 +13,6 @@ router.use(bodyParser.json());
 
 // Create user in DB
 router.post('/create', function (req, res) {
-  console.log(req.body);
   const pwdMeta = generatePassword(req.body.password);
   return User.create({
     userId: req.body.userId,
