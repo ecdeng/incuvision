@@ -19,11 +19,11 @@ const io = require('socket.io')(server);
 io.on('connection', function(socket){
   console.log(`new connection: ${socket.id}`);
   
-  socket.on('message', (msg) => {
+  socket.on('move', (msg) => {
     let date = new Date();
     let time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
-    let message = `${date.toLocaleTimeString()} $: ${msg}`;
-    io.emit('message', message);
+    let message = `${date.toLocaleTimeString()} # ${msg}`;
+    io.emit('move', message);
     console.log(message);
   });
 
