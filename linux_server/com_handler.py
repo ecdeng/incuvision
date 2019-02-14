@@ -26,9 +26,10 @@ class ComHandler:
             # parse the move data recieved from the web-server
             print('on_move triggered, data: ', data)
             data_arr = data.split('#')
+            point_data = data_arr[1]
             if (len(data_arr) != 2):
                 self.sio.send(const.INVALID_MESSAGE_ERROR)
-            old_point_str = data[const.NEW_POINT_PARAM]
+            old_point_str = point_data[const.CURR_POINT_PARAM]
             if not self.point_is_valid(old_point_str):
                 self.sio.send(const.INVALID_POINT_ERROR)
                 return
@@ -38,7 +39,7 @@ class ComHandler:
             if self.curr_point is not None and self.curr_point != old_point:
                 self.sio.send(const.OUT_OF_SYNC_ERROR)
                 return
-            new_point_str = data[const.NEW_POINT_PARAM]
+            new_point_str = point_data[const.NEW_POINT_PARAM]
             if not self.point_is_valid(new_point_str):
                 self.sio.send(const.INVALID_POINT_ERROR)
                 return
