@@ -1,0 +1,83 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+  font: 13px Helvetica, Arial; 
+  display: flex;
+  flex-direction: column;
+}
+body > div {
+  flex: 1;
+}
+
+.console {
+  height: 50vh;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+}
+form { 
+  background: #000; 
+  padding: 3px; 
+  position: sticky;
+  bottom: 0;
+  width: 100%; 
+}
+form input { 
+  border: 0; 
+  padding: 10px; 
+  width: 90%; 
+  margin-right: .5%; 
+}
+form button { 
+  width: 9%; 
+  background: rgb(130, 224, 255); 
+  border: none; 
+  padding: 10px; }
+#messages { 
+  overflow-y: scroll;
+  flex: 4;
+  list-style-type: none;
+  margin: 0; 
+  padding: 0; 
+}
+#messages li { 
+  padding: 5px 10px; 
+}
+#messages li:nth-child(odd) { 
+  background: #eee; 
+}
+#messages li:nth-child(even) { 
+  background: #e1e1e1; 
+}
+.buttons {
+  display: flex;
+  align-content: center;
+}
+
+.button {
+  flex: 1;
+  color: white;
+  display: flex;
+  margin: 15px;
+  padding: 50px;
+  background-color: gray;
+  
+  height: 50px;
+
+
+  cursor: pointer;
+}
+
+.button:hover {
+  border: 1px solid black;
+}
+
+.button:active {
+  box-shadow: inset 3px 3px rgba(0,0,0,0.2);
+  transform: translate(3px, 3px);
+}
+
+.red {background-color: red}
+.blue {background-color: blue}
+.green {background-color: green}
+.yellow {background-color: yellow; color: black}

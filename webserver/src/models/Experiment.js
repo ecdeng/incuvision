@@ -14,18 +14,21 @@ module.exports = function (sequelize, DataTypes) {
 	});
 
 	// Foreign Key associations
-	Experiment.hasMany(Position, {
-		foreignKey: {
-			name: 'experimentId',
-			allowNull: false
-		}
-	});
-	Experiment.hasMany(Image, {
-		foreignKey: {
-			name: 'experimentId',
-			allowNull: false
-		}
-	});
+	Experiment.associate = function(models) {
+		this.hasMany(models.Position, {
+			foreignKey: {
+				name: 'experimentId',
+				allowNull: false
+			}
+		});
+		this.hasMany(models.Image, {
+			foreignKey: {
+				name: 'experimentId',
+				allowNull: false
+			}
+		});
+	}
+	
 	//Experiment now has access to getPositions and getImages
 
 	return Experiment;

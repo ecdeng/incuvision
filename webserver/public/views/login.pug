@@ -1,0 +1,21 @@
+//- login.pug
+doctype html
+html
+	head
+		link(rel="stylesheet", href="styles/login.css", type="text/css")
+		title Incuvision Login
+	body
+		div.loginArea
+			h2 Incuvision
+			h3 Remote Incubation Portal
+			form.loginForm(action="/login", method="post")
+				div.row
+					label username: 
+					input(type="text", name="username")
+				div.row
+					label password: 
+					input(type="text", name="password")
+				button(type="submit") Log In
+		div.background
+
+	

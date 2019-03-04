@@ -1,0 +1,18 @@
+//- createuser.pug
+doctype html
+html
+	head
+		title Create User
+	body
+		h2 Create User
+		form(method='POST', action='/users/create')
+			label Username: 
+			input(type='text', name='username')
+			br
+			label Password: 
+			input(type='text', name='password')
+			br
+			label Email: 
+			input(type='text', name='email')
+			br
+			input(type='submit')

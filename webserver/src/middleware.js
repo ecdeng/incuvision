@@ -15,6 +15,8 @@ exports.routeVerify = function(req, res, next) {
 exports.log = function(req, res, next) {
     let date = new Date();
     console.log(req.method + " request made to url " + req.url + " at time " + date.toLocaleTimeString());
-    console.log("\tRequest contained body " + JSON.stringify(req.body));
+    if (JSON.stringify(req.body) !== "{}") {
+			console.log("\tRequest contained body " + JSON.stringify(req.body));
+		}
     next();
 }

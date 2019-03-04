@@ -4,14 +4,14 @@ const app = express();
 const http = require('http');
 
 // HTML Rendering Setup
-app.set('views', __dirname + '/../public');
-app.engine('html', require('ejs').renderFile);
-app.set('view engine', 'html');
+// app.set('views', __dirname + '/../public');
+app.set('views', 'public/views/');
+app.set('view engine', 'pug');
 
 // Express app setup
 const routes = require('./routes/routes');
 app.use('/', routes);
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/../public'));
 
 // Server setup
 let port = process.env.PORT || 3000;

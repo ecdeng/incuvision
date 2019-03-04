@@ -6,7 +6,7 @@ const fs = require('fs');
 
 // User-created imports
 const util = require('../middleware');
-const auth = require('../Authentication');
+const auth = require('../authentication');
 const passport = require('../PassportConfig');
 const UserRoutes = require('./UserRoutes.js').router;
 const ExperimentRoutes = require('./ExperimentRoutes.js').router;
@@ -39,12 +39,18 @@ router.use('/images', ImageRoutes);
 
 // Index route
 router.get('/', auth.required, (req, res) => {
-	res.render('test.html');
+	res.redirect('/home');
 });
+
+// Home page
+router.get('/home', auth.required, (req, res) => {
+	res.render('home', {username: req.user.username});
+});
+
 
 // Login page
 router.get('/login', (req, res) => {
-	res.render('login.html');
+	res.render('login');
 });
 
 // User account authentication route (passport used as middleware)
@@ -73,7 +79,7 @@ router.get('/logout', auth.required, (req, res) => {
 });
 
 router.get('/createUser', (req, res) => {
-	res.sendFile('user.html', { root: __dirname + '../../../public' });
+	res.render('createuser');
 });
 
 module.exports = router;

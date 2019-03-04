@@ -28,13 +28,15 @@ module.exports = function (sequelize, DataTypes) {
 	// 		allowNull: true
 	// 	}
 	// });
-
-	Position.hasMany(Image, {
-		foreignKey: {
-			name: 'positionId',
-			allowNull: false
-		}
-	});
+	Position.associate = function(models) {
+		this.hasMany(models.Image, {
+			foreignKey: {
+				name: 'positionId',
+				allowNull: false
+			}
+		});
+	}
+	
 
 	return Position;
 };
