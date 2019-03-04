@@ -1,4 +1,5 @@
-const express = require('express')
+const express = require('express');
+const util = require('./middleware');
 const app = express();
 
 const http = require('http');
@@ -12,6 +13,8 @@ app.set('view engine', 'pug');
 const routes = require('./routes/routes');
 app.use('/', routes);
 app.use(express.static(__dirname + '/../public'));
+
+app.use(util.fourohfour);
 
 // Server setup
 let port = process.env.PORT || 3000;
