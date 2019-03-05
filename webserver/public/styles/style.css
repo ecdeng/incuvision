@@ -1,4 +1,19 @@
+/* Dark gray: #282C34 and rgb(40,44,52) */
+/* Blue-gray: #3C5380 and rgb(60,83,128) */
+
 html, body { margin: 0; padding: 0; }
+
+p { 
+	margin: 0; 
+	font-family: 'Lora', serif;
+}
+
+a { 
+	text-decoration: none;
+	color: inherit; 
+	font-family: inherit;
+	font-size: inherit;
+}
 
 h1, h2, h3, h4 {
 	font-family: Helvetica, sans-serif;
@@ -9,6 +24,8 @@ h1, h2, h3, h4 {
 h1 { font-size: 4em; }
 h2 { font-size: 3em; }
 h3 { font-size: 2em; }
+h4 { font-size: 1.4em; }
+
 
 span, label {
 	color: black;

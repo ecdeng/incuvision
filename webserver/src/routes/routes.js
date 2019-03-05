@@ -13,7 +13,6 @@ const ExperimentRoutes = require('./ExperimentRoutes.js').router;
 const PositionRoutes = require('./PositionRoutes.js').router;
 const ImageRoutes = require('./ImageRoutes.js').router;
 
-
 // Express Router object (mounted in index.js)
 const router = express.Router();
 
@@ -49,6 +48,15 @@ router.get('/home', auth.required, (req, res) => {
 	res.render('home', { username: req.user.username });
 });
 
+// Experiments page
+router.get('/experiments', auth.required, (req, res) => {
+	res.render('experiments', { username: req.user.username });
+});
+
+// Individual Experiment page
+router.get('/experiments/:id', auth.required, (req, res) => {
+	res.render('experiment_individual', { experimentId: req.params.id });
+});
 
 // Login page
 router.get('/login', (req, res) => {

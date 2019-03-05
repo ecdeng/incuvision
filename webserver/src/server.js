@@ -4,6 +4,9 @@ const app = express();
 
 const http = require('http');
 
+// Allow web client to access API on same server (need to do this BEFORE mounting router)
+app.use(util.allowCrossDomain);
+
 // HTML Rendering Setup
 // app.set('views', __dirname + '/../public');
 app.set('views', 'public/views/');
