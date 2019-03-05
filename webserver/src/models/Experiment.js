@@ -18,18 +18,18 @@ module.exports = function (sequelize, DataTypes) {
 		this.hasMany(models.Position, {
 			foreignKey: {
 				name: 'experimentId',
-				allowNull: false
+				allowNull: true
 			}
 		});
 		this.hasMany(models.Image, {
 			foreignKey: {
 				name: 'experimentId',
-				allowNull: false
+				allowNull: true
 			}
 		});
 	}
 	
-	//Experiment now has access to getPositions and getImages
+	//Experiment now has access to getPositions, setPositions and getImages, setImages
 
 	return Experiment;
 };
