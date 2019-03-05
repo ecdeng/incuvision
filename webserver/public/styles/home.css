@@ -86,3 +86,39 @@
 .manualChanges {
 	flex-grow: 1;
 }
+
+.positionArea {
+	display: flex;
+}
+
+.positionArea > div {
+	flex: 1;
+}
+
+.positionInputArea {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	align-items: center;
+}
+
+.changeForm {
+	display: flex;
+	flex-direction: column;
+}
+
+.changeForm > span {
+	font-weight: bold;
+}
+
+.changeForm .formgroup input[type="text"]{
+	margin-left: 5px;
+}
+
+.grid {
+	padding: 20px;
+}
+
+.grid img {
+	width: 100%;
+}

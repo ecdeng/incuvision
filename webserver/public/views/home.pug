@@ -45,4 +45,25 @@ block content
 							span.yVal 120
 			.manualChanges
 				h3 Manually Change Position
-				
+				.positionArea
+					.positionInputArea
+						form.absoluteChange.changeForm(action="") 
+							span Absolute Position
+							.formgroup
+								label x:
+								input(type="text")
+							.formgroup
+								label y:
+								input(type="text")
+							input(type="submit", value="Move")
+						form.relativeChange.changeForm(action="") 
+							span Relative Position
+							.formgroup
+								label + x:
+								input(type="text")
+							.formgroup
+								label + y:
+								input(type="text")
+							input(type="submit", value="Move")
+					.grid
+						img(src="img/grid.png", alt="grid.png")

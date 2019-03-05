@@ -20,6 +20,8 @@ const router = express.Router();
 // For handling JSON data in router
 router.use(bodyParser.urlencoded());
 router.use(bodyParser.json());
+
+// Logging middleware
 router.use(util.log);
 
 // Set up express-session
@@ -44,7 +46,7 @@ router.get('/', auth.required, (req, res) => {
 
 // Home page
 router.get('/home', auth.required, (req, res) => {
-	res.render('home', {username: req.user.username});
+	res.render('home', { username: req.user.username });
 });
 
 
@@ -74,8 +76,8 @@ router.post('/login', (req, res) => {
 
 router.get('/logout', auth.required, (req, res) => {
 	req.session.destroy(function (err) {
-    res.redirect('/login');
-  });
+		res.redirect('/login');
+	});
 });
 
 router.get('/createUser', (req, res) => {

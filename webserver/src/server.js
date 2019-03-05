@@ -10,10 +10,11 @@ app.set('views', 'public/views/');
 app.set('view engine', 'pug');
 
 // Express app setup
+app.use(express.static(__dirname + '/../public'));
 const routes = require('./routes/routes');
 app.use('/', routes);
-app.use(express.static(__dirname + '/../public'));
 
+// 404 Route -- see middleware.js for explanation of why we .use() this here, not in routes.js
 app.use(util.fourohfour);
 
 // Server setup
