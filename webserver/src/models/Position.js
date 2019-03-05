@@ -18,6 +18,10 @@ module.exports = function (sequelize, DataTypes) {
 		yPos: {
 			type: DataTypes.INTEGER,
 			allowNull: false
+		},
+		zPos: {
+			type: DataTypes.INTEGER,
+			allowNull: true
 		}
 	});
 
