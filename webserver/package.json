@@ -25,7 +25,8 @@
   },
   "scripts": {
     "test": "jest",
-    "start": "node ./src/server.js"
+		"start": "node ./src/server.js",
+		"dev": "nodemon ./src/server.js"
 	},
 	"production": {
 		"use_env_variable": "DATABASE_URL"
