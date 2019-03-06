@@ -55,7 +55,7 @@ router.get('/experiments', auth.required, (req, res) => {
 
 // Individual Experiment page
 router.get('/experiments/:id', auth.required, (req, res) => {
-	res.render('experiment_individual', { experimentId: req.params.id });
+	res.render('experiment_individual', { username: req.user.username, experimentId: req.params.id });
 });
 
 // Login page
@@ -77,7 +77,14 @@ router.post('/login', (req, res) => {
 				console.log(err);
 				res.send(err);
 			}
-			return res.redirect('/');
+			// If the user had another intended destination, go there
+			if (req.session.previous) {
+				let redirUrl = req.session.previous;
+				req.session.previous = null;
+				return res.redirect(redirUrl);
+			}
+			// Else, go home
+			else return res.redirect('/');
 		});
 	})(req, res);
 });
