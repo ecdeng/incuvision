@@ -5,7 +5,7 @@
   - This will also install [nodemon](https://nodemon.io), a really useful utility when we're developing on a Node server.
 3. Run the server with the command `npm start`
   - This script runs `node ./src/server.js`.
-	- For a dev-friendly script, run `npm dev` and you'll get the same result running on nodemon.
+	- For a dev-friendly script, run `npm run-script dev` and you'll get the same result running on nodemon.
 
 # MySQL Installation Instructions
 ### If you've already got a MySQL setup you like, all you need to do is modify the very top of DBManager.js. Otherwise, follow the instructions below!
