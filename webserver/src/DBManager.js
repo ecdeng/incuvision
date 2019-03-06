@@ -1,10 +1,20 @@
 const Sequelize  = require('sequelize');
 
-var sequelize = new Sequelize('incuvision', 'root', '', {
+var sequelize = null;
+if (process.env.DATABASE_URL) {
+	// the application is executed on Heroku ... use the postgres database
+	sequelize = new Sequelize(process.env.DATABASE_URL, {
+		ssl: true,
+		logging:  true //false
+	});
+} else {
+	// the application is executed on the local machine ... use mysql
+	sequelize  = new Sequelize('incuvision', 'root', '', {
     dialect: 'mysql',
-    host: "127.0.0.1",
+    host: "localhost",
     port: "3306"
-});
+	});
+}
 
 var models = [
 		'User',
