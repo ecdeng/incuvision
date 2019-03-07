@@ -6,13 +6,12 @@ const fs = require('fs');
 
 // User-created imports
 const util = require('../middleware');
-const auth = require('../Authentication');
+const auth = require('../authentication');
 const passport = require('../PassportConfig');
 const UserRoutes = require('./UserRoutes.js').router;
 const ExperimentRoutes = require('./ExperimentRoutes.js').router;
 const PositionRoutes = require('./PositionRoutes.js').router;
 const ImageRoutes = require('./ImageRoutes.js').router;
-
 
 // Express Router object (mounted in index.js)
 const router = express.Router();
@@ -20,6 +19,8 @@ const router = express.Router();
 // For handling JSON data in router
 router.use(bodyParser.urlencoded());
 router.use(bodyParser.json());
+
+// Logging middleware
 router.use(util.log);
 
 // Set up express-session
@@ -39,12 +40,27 @@ router.use('/images', ImageRoutes);
 
 // Index route
 router.get('/', auth.required, (req, res) => {
-	res.render('test.html');
+	res.redirect('/home');
+});
+
+// Home page
+router.get('/home', auth.required, (req, res) => {
+	res.render('home', { username: req.user.username });
+});
+
+// Experiments page
+router.get('/experiments', auth.required, (req, res) => {
+	res.render('experiments', { username: req.user.username });
+});
+
+// Individual Experiment page
+router.get('/experiments/:id', auth.required, (req, res) => {
+	res.render('experiment_individual', { username: req.user.username, experimentId: req.params.id });
 });
 
 // Login page
 router.get('/login', (req, res) => {
-	res.render('login.html');
+	res.render('login');
 });
 
 // User account authentication route (passport used as middleware)
@@ -61,19 +77,26 @@ router.post('/login', (req, res) => {
 				console.log(err);
 				res.send(err);
 			}
-			return res.redirect('/');
+			// If the user had another intended destination, go there
+			if (req.session.previous) {
+				let redirUrl = req.session.previous;
+				req.session.previous = null;
+				return res.redirect(redirUrl);
+			}
+			// Else, go home
+			else return res.redirect('/');
 		});
 	})(req, res);
 });
 
 router.get('/logout', auth.required, (req, res) => {
 	req.session.destroy(function (err) {
-    res.redirect('/login');
-  });
+		res.redirect('/login');
+	});
 });
 
 router.get('/createUser', (req, res) => {
-	res.sendFile('user.html', { root: __dirname + '../../../public' });
+	res.render('createuser');
 });
 
 module.exports = router;

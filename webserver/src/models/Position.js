@@ -18,6 +18,10 @@ module.exports = function (sequelize, DataTypes) {
 		yPos: {
 			type: DataTypes.INTEGER,
 			allowNull: false
+		},
+		zPos: {
+			type: DataTypes.INTEGER,
+			allowNull: true
 		}
 	});
 
@@ -28,13 +32,15 @@ module.exports = function (sequelize, DataTypes) {
 	// 		allowNull: true
 	// 	}
 	// });
-
-	Position.hasMany(Image, {
-		foreignKey: {
-			name: 'positionId',
-			allowNull: false
-		}
-	});
+	Position.associate = function(models) {
+		this.hasMany(models.Image, {
+			foreignKey: {
+				name: 'positionId',
+				allowNull: false
+			}
+		});
+	}
+	
 
 	return Position;
 };

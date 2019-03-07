@@ -1,0 +1,70 @@
+//- home.pug
+
+extends includes/layout
+
+block append styles
+	link(rel="stylesheet", href="styles/home.css")
+
+block content
+	.main
+		.leftPane
+			.currentPos Current position: 
+				span.posName #3
+			.camera
+				img(src="img/cells.jpg", alt="cells.jpg")
+		.rightPane
+			.savedPositions
+				h3 Your Saved Positions
+				ul.positionList
+					li.positionListItem
+						h4.posName Pos #1
+						.row
+							span x: 
+							span.xVal 50
+							span y: 
+							span.yVal 120
+					li.positionListItem
+						h4.posName Pos #1
+						.row
+							span x: 
+							span.xVal 50
+							span y: 
+							span.yVal 120
+					li.positionListItem
+						h4.posName Pos #1
+						.row
+							span x: 
+							span.xVal 50
+							span y: 
+							span.yVal 120
+					li.positionListItem
+						h4.posName Pos #1
+						.row
+							span x: 
+							span.xVal 50
+							span y: 
+							span.yVal 120
+			.manualChanges
+				h3 Manually Change Position
+				.positionArea
+					.positionInputArea
+						form.absoluteChange.changeForm(action="") 
+							span Absolute Position
+							.formgroup
+								label x:
+								input(type="text")
+							.formgroup
+								label y:
+								input(type="text")
+							input(type="submit", value="Move")
+						form.relativeChange.changeForm(action="") 
+							span Relative Position
+							.formgroup
+								label + x:
+								input(type="text")
+							.formgroup
+								label + y:
+								input(type="text")
+							input(type="submit", value="Move")
+					.grid
+						img(src="img/grid.png", alt="grid.png")

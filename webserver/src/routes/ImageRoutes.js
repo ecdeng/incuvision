@@ -16,7 +16,9 @@ router.post('/create', function (req, res) {
     imageId: req.body.imageId,
 		name: req.body.name,
 		timestamp: req.body.timestamp,
-		filepath: req.body.filepath
+    filepath: req.body.filepath,
+    positionId: positionId,
+    experimentId: experimentId
   }).then(function (newImage) {
     res.send(newImage);
   }).catch((err) => {
@@ -30,7 +32,9 @@ router.post('/update', function (req, res) {
     imageId: req.body.imageId,
     name: req.body.name,
 		timestamp: req.body.timestamp,
-		filepath: req.body.filepath
+    filepath: req.body.filepath,
+    positionId: positionId,
+    experimentId:  experimentId
   },
     {
       where: { imageId: req.body.imageId }
@@ -64,5 +68,40 @@ function getById(imageId) {
     }
   );
 }
+
+// Associate image with a position
+router.post("/updateAssociatedPosition", (req, res) => {
+  return Image.update({
+    positionId: req.body.positionId,
+  },
+    {
+      where: { imageId: req.body.imageId }
+    }
+  ).then(function() {
+    getById(req.body.imageId).then(function (image) {
+      res.send(image);
+    });
+  }).catch((err) => {
+    res.send(err);
+  });
+});
+
+
+// Associate image with an experiment
+router.post("/updateAssociatedExperiment", (req, res) => {
+  return Image.update({
+    experimentId:  experimentId
+  },
+    {
+      where: { imageId: req.body.imageId }
+    }
+  ).then(function() {
+    getById(req.body.imageId).then(function (image) {
+      res.send(image);
+    });
+  }).catch((err) => {
+    res.send(err);
+  });
+});
 
 module.exports.router = router;
