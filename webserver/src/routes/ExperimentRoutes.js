@@ -13,10 +13,11 @@ router.use(bodyParser.json());
 // Create experiment in DB
 router.post('/create', function (req, res) {
   /* create a bunch of positions from req.body 
-    then create the expereriment below */
+    then create the experiment below */
   return Experiment.create({
     experimentId: req.body.experimentId,
-    name: req.body.name
+    name: req.body.name,
+    description: req.body.description
   }).then(function (newExperiment) {
     req.body.positions.forEach(element => {
       Position.create({
@@ -42,7 +43,8 @@ router.post('/create', function (req, res) {
 router.post('/update', function (req, res) {
   return Experiment.update({
     experimentId: req.body.experimentId,
-    name: req.body.name
+    name: req.body.name,
+    description: req.body.description
   },
     {
       where: { experimentId: req.body.experimentId }
@@ -77,4 +79,4 @@ function getById(experimentId) {
   );
 }
 
-module.exports.router = router;
+module.exports.router = router

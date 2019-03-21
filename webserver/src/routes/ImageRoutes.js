@@ -17,8 +17,8 @@ router.post('/create', function (req, res) {
 		name: req.body.name,
 		timestamp: req.body.timestamp,
     filepath: req.body.filepath,
-    positionId: positionId,
-    experimentId: experimentId
+    positionId: req.body.positionId,
+    experimentId: req.body.experimentId
   }).then(function (newImage) {
     res.send(newImage);
   }).catch((err) => {
@@ -33,8 +33,8 @@ router.post('/update', function (req, res) {
     name: req.body.name,
 		timestamp: req.body.timestamp,
     filepath: req.body.filepath,
-    positionId: positionId,
-    experimentId:  experimentId
+    positionId: req.body.positionId,
+    experimentId: req.body.experimentId
   },
     {
       where: { imageId: req.body.imageId }
@@ -69,39 +69,70 @@ function getById(imageId) {
   );
 }
 
-// Associate image with a position
-router.post("/updateAssociatedPosition", (req, res) => {
-  return Image.update({
-    positionId: req.body.positionId,
-  },
-    {
-      where: { imageId: req.body.imageId }
-    }
-  ).then(function() {
-    getById(req.body.imageId).then(function (image) {
-      res.send(image);
-    });
-  }).catch((err) => {
-    res.send(err);
-  });
+// Get all images associated with a Position
+router.get("/getByPosition", (req, res) => {
+  getByPosition(req.query.positionId).then(function (image) {
+    res.send(image);
+  })
 });
 
+function getByPosition(positionId) {
+  return Image.findAll(
+    {
+      where: { positionId: positionId },
+    }
+  );
+}
+
+// Get all images associated with an Experiment
+router.get("/getByExperiment", (req, res) => {
+  getByExperiment(req.query.experimentId).then(function (image) {
+    res.send(image);
+  })
+});
+
+function getByExperiment(experimentId) {
+  return Image.findAll(
+    {
+      where: { experimentId: experimentId },
+    }
+  );
+}
+
+/* UPDATE ACTUALLY DOES BOTH THESE TASKS ALREADY */
+
+// Associate image with a position
+// router.post("/updateAssociatedPosition", (req, res) => {
+//   return Image.update({
+//     positionId: req.body.positionId,
+//   },
+//     {
+//       where: { imageId: req.body.imageId }
+//     }
+//   ).then(function() {
+//     getById(req.body.imageId).then(function (image) {
+//       res.send(image);
+//     });
+//   }).catch((err) => {
+//     res.send(err);
+//   });
+// });
 
 // Associate image with an experiment
-router.post("/updateAssociatedExperiment", (req, res) => {
-  return Image.update({
-    experimentId:  experimentId
-  },
-    {
-      where: { imageId: req.body.imageId }
-    }
-  ).then(function() {
-    getById(req.body.imageId).then(function (image) {
-      res.send(image);
-    });
-  }).catch((err) => {
-    res.send(err);
-  });
-});
+// router.post("/updateAssociatedExperiment", (req, res) => {
+//   return Image.update({
+//     experimentId:  experimentId
+//   },
+//     {
+//       where: { imageId: req.body.imageId }
+//     }
+//   ).then(function() {
+//     getById(req.body.imageId).then(function (image) {
+//       res.send(image);
+//     });
+//   }).catch((err) => {
+//     res.send(err);
+//   });
+// });
 
 module.exports.router = router;
