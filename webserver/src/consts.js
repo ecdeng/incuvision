@@ -8,3 +8,6 @@ exports.server_response_route = 'server_response';
 
 exports.invalid_move_str_err = 'invalid_move_str_err';
 exports.move_collision_err = 'move_collision_err';
+exports.server_err = 'server_err';
+exports.server_good_response_status = 'ok';
+exports.move_good_response_status = 'ok';
