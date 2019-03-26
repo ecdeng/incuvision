@@ -11,7 +11,10 @@ block content
 			.currentPos Current position: 
 				span.posName #3
 			.camera
-				img(src="img/cells.jpg", alt="cells.jpg")
+				// VideoJS elements
+				video#videojs.player.video-js.vjs-default-skin(controls='', autoplay='')
+				script(src='https://vjs.zencdn.net/6.6.3/video.js')
+				script(src='https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.14.1/videojs-contrib-hls.js')
 		.rightPane
 			.savedPositions
 				h3 Your Saved Positions
@@ -68,3 +71,60 @@ block content
 							input(type="submit", value="Move")
 					.grid
 						img(src="img/grid.png", alt="grid.png")
+	script.
+		configureLogging();
+		var streamName = "IncuvisionVideoStream";
+		// Step 1: Configure SDK Clients
+		var options = {
+			accessKeyId: "AKIAIZPJ4P7U6GEL46QA",
+			secretAccessKey: "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",
+			sessionToken: undefined,
+			region: "us-west-2",
+			endpoint: undefined
+		}
+		var kinesisVideo = new AWS.KinesisVideo(options);
+		var kinesisVideoArchivedContent = new AWS.KinesisVideoArchivedMedia(options);
+		// Step 2: Get a data endpoint for the stream
+		console.log('Fetching data endpoint');
+		kinesisVideo.getDataEndpoint({
+			StreamName: streamName,
+			APIName: "GET_HLS_STREAMING_SESSION_URL"
+		}, function(err, response) {
+			if (err) { return console.error(err); }
+			console.log('Data endpoint: ' + response.DataEndpoint);
+			kinesisVideoArchivedContent.endpoint = new AWS.Endpoint(response.DataEndpoint);
+			// Step 3: Get an HLS Streaming Session URL
+			console.log('Fetching HLS Streaming Session URL');
+			kinesisVideoArchivedContent.getHLSStreamingSessionURL({
+				StreamName: streamName,
+				PlaybackMode: "LIVE",
+				HLSFragmentSelector: {
+					FragmentSelectorType: "SERVER_TIMESTAMP",
+					TimestampRange: undefined,
+					ContainerFormat: "FRAGMENTED_MP4",
+					DiscontinuityMode: "ALWAYS,
+					DisplayFragmentTimestamp: "ALWAYS",
+					MaxMediaPlaylistFragmentResults: undefined,
+					Expires: undefined
+				}, function(err, response) {
+					if (err) { return console.error(err); }
+					console.log('HLS Streaming Session URL: ' + response.HLSStreamingSessionURL);
+					// Step 4: Give the URL to the video player.
+					var playerName = "VideoJS";
+					if (playerName === 'VideoJS') {
+						var playerElement = $('#videojs');
+						playerElement.show();
+						var player = videojs('videojs');
+						console.log('Created VideoJS Player');
+						player.src({
+							src: response.HLSStreamingSessionURL,
+							type: 'application/x-mpegURL'
+						});
+						console.log('Set player source');
+						player.play();
+						console.log('Starting playback');
+					} 
+				});
+			});
+			$('.player').hide();
+		});
