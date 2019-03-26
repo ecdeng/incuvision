@@ -1,0 +1,48 @@
+body {
+	display: flex;
+	flex-direction: column;
+}
+
+body > div {
+	flex: 1;
+}
+
+.header {
+	flex: 0 1 auto;
+	height: min-content;
+	background-color: rgba(40,44,52,1);
+	padding: 10px;
+	
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.header > h1 {
+	color: white
+}
+
+.header .fa-user {
+	color: white;
+}
+
+.userArea {
+	text-decoration: none;
+	display: flex;
+	align-items: center;
+}
+
+.username {
+	color: white;
+	margin: 0 5px 0 0;
+}
+
+.user-btn {
+	background: none;
+	border: none;
+	cursor: pointer;
+}
+
+.user-btn:active .fa-user {
+	color: #bbb;
+}

@@ -1,0 +1,62 @@
+.main {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.main h2 {
+	color: black;
+	margin-top: 20px;
+}
+
+.new {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	text-align: center;
+}
+
+.new .fa-stack {
+	/* color: #8E9CB9; */
+	color: #3C5380;
+	margin: 10px 0;
+	transition: color 0.1s ease;
+}
+
+.new:hover .fa-stack {
+	color: #99A8C7;
+	margin: 10px 0;
+}
+
+.experimentList {
+	list-style-type: none;
+	padding: 0;
+
+}
+
+.experiment {
+	cursor: pointer;
+	background-color: #EEF4FF;
+	border: 1px solid #e7e7e7;
+	padding: 10px;
+	border-radius: 5px;
+	margin: 10px 0;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.experiment:hover h3 {
+	color: #99A8C7;
+}
+
+.experiment h3 {
+	color: #3C5380;
+	transition: color 0.15s ease;
+}
+
+.experiment h4 {
+	color: black;
+	margin-bottom: 5px;
+}

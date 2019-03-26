@@ -1,0 +1,50 @@
+.main {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.main h2 {
+	color: black;
+	margin: 20px 0;
+}
+
+.newExperimentForm {
+	display: flex;
+	flex-direction: column;
+}
+
+.formGroup:nth-of-type(1) {
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+.formGroup:last-of-type {
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+.formGroup {
+	padding: 10px;
+	background-color: #EEF4FF;
+	border: 1px solid #ccc;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.formGroup input {
+	margin-left: 10px;
+}
+
+.formGroup label {
+	text-align: right;
+	font-size: 1.3em;
+}
+
+.formGroup .experimentId {
+	border: 1px solid #ccc;
+	background: white;
+	padding: 2px 5px;
+	margin-left: 10px;
+}
