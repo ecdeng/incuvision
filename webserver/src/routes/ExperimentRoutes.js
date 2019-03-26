@@ -14,45 +14,47 @@ router.use(bodyParser.json());
 // Create experiment in DB
 router.post('/create', function (req, res) {
   /* create a bunch of positions from req.body 
-    then create the expereriment below */
-	return Experiment.create({
-		experimentId: req.body.experimentId,
-		name: req.body.name
-	}).then(function (newExperiment) {
-		req.body.positions.forEach(element => {
-			Position.create({
-				positionId: element.positionId,
-				name: element.name,
-				xPos: element.xPos,
-				yPos: element.yPos,
-				zPos: element.zPos,
-				experimentId: newExperiment.experimentId
-			}).then(function (newPosition) {
-				res.send(newPosition);
-			}).catch((err) => {
-				res.send(err);
-			});
-		});
-		res.send(newExperiment);
-	}).catch((err) => {
-		res.send(err);
-	});
+    then create the experiment below */
+  return Experiment.create({
+    experimentId: req.body.experimentId,
+    name: req.body.name,
+    description: req.body.description
+  }).then(function (newExperiment) {
+    req.body.positions.forEach(element => {
+      Position.create({
+        positionId: element.positionId,
+        name: element.name,
+        xPos: element.xPos,
+        yPos: element.yPos,
+        zPos: element.zPos,
+        experimentId: newExperiment.experimentId
+      }).then(function (newPosition) {
+        res.send(newPosition);
+      }).catch((err) => {
+        res.send(err);
+      });
+    });
+    res.send(newExperiment);
+  }).catch((err) => {
+    res.send(err);
+  });
 });
 
 // Update experiment in DB
 router.post('/update', function (req, res) {
-	return Experiment.update({
-		experimentId: req.body.experimentId,
-		name: req.body.name
-	},
-		{
-			where: { experimentId: req.body.experimentId }
-		}
-	).then(function () {
-		getById(req.body.experimentId).then(function (experiment) {
-			res.send(experiment);
-		});
-	})
+  return Experiment.update({
+    experimentId: req.body.experimentId,
+    name: req.body.name,
+    description: req.body.description
+  },
+    {
+      where: { experimentId: req.body.experimentId }
+    }
+  ).then(function() {
+    getById(req.body.experimentId).then(function (experiment) {
+      res.send(experiment);
+    });
+  })
 });
 
 // Get all experiments in DB
@@ -90,4 +92,4 @@ function getById(experimentId) {
 	);
 }
 
-module.exports.router = router;
+module.exports.router = router

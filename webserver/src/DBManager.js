@@ -20,7 +20,8 @@ var models = [
 		'User',
 		'Experiment',
 		'Image',
-		'Position'
+		'Position',
+		'Job'
 ];
 
 var modelObj = {};

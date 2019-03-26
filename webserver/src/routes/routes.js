@@ -12,6 +12,7 @@ const UserRoutes = require('./UserRoutes.js').router;
 const ExperimentRoutes = require('./ExperimentRoutes.js').router;
 const PositionRoutes = require('./PositionRoutes.js').router;
 const ImageRoutes = require('./ImageRoutes.js').router;
+const JobRoutes = require('./JobRoutes.js').router;
 
 // Express Router object (mounted in index.js)
 const router = express.Router();
@@ -37,6 +38,7 @@ router.use('/users', UserRoutes);
 router.use('/experiments', ExperimentRoutes);
 router.use('/positions', PositionRoutes);
 router.use('/images', ImageRoutes);
+router.use('/jobs', JobRoutes);
 
 // Index route
 router.get('/', auth.required, (req, res) => {

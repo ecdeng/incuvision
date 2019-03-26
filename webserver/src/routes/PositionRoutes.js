@@ -18,7 +18,8 @@ router.post('/create', function (req, res) {
 		xPos: req.body.xPos,
     yPos: req.body.yPos,
     zPos: req.body.zPos,
-    experimentId: req.body.experimentId
+    experimentId: req.body.experimentId,
+    jobId: req.body.jobId
   }).then(function (newPosition) {
     res.send(newPosition);
   }).catch((err) => {
@@ -34,7 +35,8 @@ router.post('/update', function (req, res) {
 		xPos: req.body.xPos,
     yPos: req.body.yPos,
     zPos: req.body.zPos,
-    experimentId: experimentId
+    experimentId: req.body.experimentId,
+    jobId: req.body.jobId
   },
     {
       where: { positionId: req.body.positionId }
@@ -69,21 +71,22 @@ function getById(positionId) {
   );
 }
 
-// Associate position with an experiment
-router.post("/updateAssociatedExperiment", (req, res) =>{
-  return Position.update({
-    experimentId: req.body.experimentId,
-  },
-    {
-      where: { positionId: req.body.positionId }
-    }
-  ).then(function() {
-    getById(req.body.positionId).then(function (position) {
-      res.send(position);
-    });
-  }).catch((err) => {
-    res.send(err);
-  });
-});
+/* Update function does this already */
+// // Associate position with an experiment
+// router.post("/updateAssociatedExperiment", (req, res) =>{
+//   return Position.update({
+//     experimentId: req.body.experimentId,
+//   },
+//     {
+//       where: { positionId: req.body.positionId }
+//     }
+//   ).then(function() {
+//     getById(req.body.positionId).then(function (position) {
+//       res.send(position);
+//     });
+//   }).catch((err) => {
+//     res.send(err);
+//   });
+// });
 
 module.exports.router = router;

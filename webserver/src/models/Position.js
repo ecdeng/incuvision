@@ -26,12 +26,6 @@ module.exports = function (sequelize, DataTypes) {
 	});
 
 	// Foreign Key associations
-	// Position.belongsTo(Experiment, {
-	// 	foreignKey: {
-	// 		name: 'positionId',
-	// 		allowNull: true
-	// 	}
-	// });
 	Position.associate = function(models) {
 		this.hasMany(models.Image, {
 			foreignKey: {
@@ -41,6 +35,7 @@ module.exports = function (sequelize, DataTypes) {
 		});
 	}
 	
+	// Position now has access to getters and setters for associated Images
 
 	return Position;
 };

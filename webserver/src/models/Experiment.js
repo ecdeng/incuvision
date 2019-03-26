@@ -14,6 +14,10 @@ module.exports = function (sequelize, DataTypes) {
 		name: {
 			type: DataTypes.STRING,
 			allowNull: false
+		},
+		description: {
+			type: DataTypes.TEXT,
+			allowNull: false
 		}
 	});
 
@@ -31,9 +35,15 @@ module.exports = function (sequelize, DataTypes) {
 				allowNull: true
 			}
 		});
+		this.hasMany(model.Job, {
+			foreignKey: {
+				name: 'experimentId',
+				allowNull: true
+			}
+		});
 	}
 	
-	//Experiment now has access to getPositions, setPositions and getImages, setImages
+	//Experiment now has access to getters and setters for associated Positions, Images, and Jobs
 
 	return Experiment;
 };
