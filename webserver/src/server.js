@@ -23,6 +23,8 @@ app.use(util.fourohfour);
 // Server setup
 let port = process.env.PORT || 3000;
 const server = http.createServer(app);
+var move_ip = false;
+var curr_pos = (0, 0, 0);
 
 // WebSocket server setup
 const io = require('socket.io')(server);
@@ -30,14 +32,6 @@ const io = require('socket.io')(server);
 io.on('connection', function(socket){
   console.log(`new connection: ${socket.id}`);
   
-  socket.on('move', (msg) => {
-    let date = new Date();
-    let time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
-    let message = `${date.toLocaleTimeString()} # ${msg}`;
-    io.emit('move', message);
-    console.log(message);
-  });
-
   //python client events
   socket.on('python-client-connected', (msg) => {
     console.log(msg);

@@ -2,7 +2,7 @@
 # routing constants
 COM_PORT = "com3"
 CON_ROUTE = "connect"
-MOVE_ROUTE = "move"
+MOVE_ROUTE = "move-command"
 DISCONNECT_ROUTE = "disconnect"
 
 # socket communication paramaters (dictionary keys)
