@@ -45,17 +45,22 @@ router.get('/', auth.required, (req, res) => {
 
 // Home page
 router.get('/home', auth.required, (req, res) => {
-	res.render('home', { username: req.user.username });
+	res.render('home');
 });
 
 // Experiments page
 router.get('/experiments', auth.required, (req, res) => {
-	res.render('experiments', { username: req.user.username });
+	res.render('experiments');
+});
+
+// Create Experiment page
+router.get('/experiments/new', auth.required, (req, res) => {
+	res.render('experiment_new');
 });
 
 // Individual Experiment page
 router.get('/experiments/:id', auth.required, (req, res) => {
-	res.render('experiment_individual', { username: req.user.username, experimentId: req.params.id });
+	res.render('experiment_individual', { experimentId: req.params.id });
 });
 
 // Login page

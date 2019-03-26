@@ -21,14 +21,24 @@ h1, h2, h3, h4 {
 	margin: 0;
 }
 
+.black { color: black; }
+
 h1 { font-size: 4em; }
 h2 { font-size: 3em; }
 h3 { font-size: 2em; }
 h4 { font-size: 1.4em; }
 
 
-span, label {
+span, label, input {
 	color: black;
 	font-family: Helvetica, sans-serif;
 	font-size: 1em;
+}
+
+input {
+	color: #666;
+}
+
+input:focus {
+	outline: none;
 }

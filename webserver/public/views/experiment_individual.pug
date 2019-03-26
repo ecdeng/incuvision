@@ -5,7 +5,71 @@ extends includes/layout
 block append styles
 	link(rel="stylesheet", href="/styles/experiment_individual.css")
 
+block append scripts
+	script.
+		$(document).ready(function() {
+			// AJAX request for Experiment data
+			$.ajax({
+				method: "GET",
+				url: "http://localhost:3000/experiments/getById?experimentId=" + #{experimentId},
+				success: (experiment) => {
+					console.log("Experiment Data:");
+					console.log(experiment);
+					$('.experimentName').text(experiment.name);
+					$('.experimentDescription').text(experiment.description);
+				}
+			});
+			// AJAX request for Positions data
+			$.ajax({
+				method: "GET",
+				url: "http://localhost:3000/experiments/getPositionsByExperiment?experimentId=" + #{experimentId},
+				success: (positions) => {
+					console.log("Experiment Positions:");
+					console.log(positions);
+					positions.forEach(function(position) {
+						$('.positionsList').append(`
+							<li class="positionListItem">
+								<span class="strong">Name: </span>
+								<span class="name">${position.name}</span>
+								<span class="strong">X: </span>
+								<span class="xPos">${position.xPos}</span>
+								<span class="strong">Y: </span>
+								<span class="yPos">${position.yPos}</span>
+							</li>
+						`);
+					});
+				}
+			});
+		});
+
 block content
 	.main
-		h2.experimentName Experiment RatExperiment
-		
+		.textArea
+			h2.experimentId.black Experiment #{experimentId}
+			h3.experimentName.black Experiment Name
+			p.experimentDescription Experiment Description
+		.panes
+			.positionsArea.pane
+				h4.black Saved Positions For This Experiment
+				ul.positionsList
+					li.positionListItem(data-id="1")
+						span.strong Name:
+						span.name Pos #1
+						span.strong X:
+						span.xPos 45
+						span.strong Y:
+						span.yPos 90
+					li.positionListItem
+						span.strong Name:
+						span.name Pos #1
+						span.strong X:
+						span.xPos 45
+						span.strong Y:
+						span.yPos 90
+			.imagesArea.pane
+				h4.black Most Recent Images
+				a(href="images").allImagesLink
+					i.fa.fa-images
+					span(style="color:inherit;") View All Images
+				ul.imageList
+			

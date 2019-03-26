@@ -3,7 +3,12 @@ body {
 	flex-direction: column;
 }
 
+body > div {
+	flex: 1;
+}
+
 .header {
+	flex: 0 1 auto;
 	height: min-content;
 	background-color: rgba(40,44,52,1);
 	padding: 10px;

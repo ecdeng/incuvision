@@ -3,10 +3,9 @@
 extends includes/layout
 
 block append styles
-	link(rel="stylesheet", href="styles/experiments.css")
+	link(rel="stylesheet", href="/styles/experiments.css")
 
 block append scripts
-	script(src="scripts/loadExperiments.js")
 	script.
 		$(document).ready(function() {
 			$.ajax({
@@ -15,13 +14,15 @@ block append scripts
 				success: (data) => {
 					data.forEach(experiment => {
 						$('.experimentList').append(`
-							<li class="experiment">
+							<a class="experimentLink" href="experiments/${experiment.experimentId}">
+								<li class="experiment">
 									<div class="textArea">
-											<h3 class="experimentId">Experiment ${experiment.experimentId}</h3>
-											<h4 class="experimentName">Experiment Name: ${experiment.name}</h4>
-											<p class="experimentDescription">${experiment.description}</p>
+										<h3 class="experimentId">Experiment ${experiment.experimentId}</h3>
+										<h4 class="experimentName">Experiment Name: ${experiment.name}</h4>
+										<p class="experimentDescription">${experiment.description}</p>
 									</div>
-							</li>
+								</li>
+							</a>
 						`);
 					});
 				}
@@ -32,18 +33,21 @@ block content
 	.main
 		h2 Experiments
 		ul.experimentList
-			li.experiment
-				.textArea
-					h3.experimentId Experiment 01
-					h4.experimentName Experiment Name: RatExperiment
-					p.experimentDescription This experiment was designed to test the efficacy of protocol IE-3234-1 on rat cells.
-				a.experimentLink(href="experiments/1") View Experiment
-			li.experiment
-				.textArea
-					h3.experimentId Experiment 02
-					h4.experimentName Experiment Name: HumanTrials
-					p.experimentDescription After the success of experiment 01, this experiment tests the efficacy of protocol IE-3234-1 on human cells.
-				a.experimentLink(href="experiments/2") View Experiment
-				
-			
-			
+			a.experimentLink(href="experiments/new")
+				li.experiment.new
+						h3 Add New Experiment
+						span.fa-stack.fa-2x
+							i.far.fa-circle.fa-stack-2x
+							i.fa.fa-plus.fa-stack-1x
+			a.experimentLink(href="experiments/1")
+				li.experiment
+					.textArea
+						h3.experimentId Experiment 01
+						h4.experimentName Experiment Name: RatExperiment
+						p.experimentDescription This experiment was designed to test the efficacy of protocol IE-3234-1 on rat cells.
+			a.experimentLink(href="experiments/2")
+				li.experiment
+					.textArea
+						h3.experimentId Experiment 02
+						h4.experimentName Experiment Name: HumanTrials
+						p.experimentDescription After the success of experiment 01, this experiment tests the efficacy of protocol IE-3234-1 on human cells.
