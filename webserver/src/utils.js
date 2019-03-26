@@ -1,6 +1,6 @@
 const MAX_MOTOR_VAL = 50000;
 
-const isValidPointStr = function(pointStr) {
+exports.isValidPointStr = function(pointStr) {
     console.log('in validate point function');
     pointStr = pointStr.trim();
     if (pointStr.length < 5 || 
@@ -32,5 +32,3 @@ const isValidPointStr = function(pointStr) {
     }
     return true;
 }
-
-module.exports = isValidPointStr;

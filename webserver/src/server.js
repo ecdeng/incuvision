@@ -1,6 +1,8 @@
 const express = require('express');
 const util = require('./middleware');
 const app = express();
+const custom_utils = require('./utils.js');
+const consts = require('./consts.js');
 
 const http = require('http');
 
@@ -31,26 +33,28 @@ const io = require('socket.io')(server);
 
 io.on('connection', function(socket){
   console.log(`new connection: ${socket.id}`);
-  
-  //python client events
-  socket.on('python-client-connected', (msg) => {
-    console.log(msg);
-    io.emit('move', msg);
-  });
 
   //web client events
-  socket.on('web-client-connected', (msg) => {
+  socket.on(consts.web_client_route, (msg) => {
     console.log(msg);
   });
 
-  socket.on('web-command', (msg) =>{
+  socket.on(consts.web_command_route, (msg) => {
     console.log('received web-command');
+    if (!custom_utils.isValidPointStr(msg)) {
+      io.emit(consts.error_status_route, 'invalid point str');
+      return;
+    }
+    if (move_ip) {
+      io.emit(consts.error_status_route, 'a move is already running');
+      return;
+    }
     console.log(`emitting move-command: ${msg}`);
-    io.emit('move-command', msg);
+    io.emit(consts.move_command_route, msg);
   });
 
   //all socket events
-  socket.on('disconnect', () => {
+  socket.on(consts.disconnect_route, () => {
     console.log(`disconnected: ${socket.id}`);
   });
 });
