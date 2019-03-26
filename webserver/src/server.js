@@ -42,11 +42,11 @@ io.on('connection', function(socket){
   socket.on(consts.web_command_route, (msg) => {
     console.log('received web-command');
     if (!custom_utils.isValidPointStr(msg)) {
-      io.emit(consts.error_status_route, 'invalid point str');
+      io.emit(consts.error_status_route, consts.invalid_move_str_err);
       return;
     }
     if (move_ip) {
-      io.emit(consts.error_status_route, 'a move is already running');
+      io.emit(consts.error_status_route, consts.move_collision_err);
       return;
     }
     console.log(`emitting move-command: ${msg}`);
