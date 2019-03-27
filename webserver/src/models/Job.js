@@ -10,7 +10,19 @@ module.exports = function (sequelize, DataTypes) {
 		name: {
 			type: DataTypes.STRING,
 			allowNull: false
-        }
+		},
+		frequency: {
+			type: DataTypes.INTEGER,
+			allowNull: false
+		},
+		startDate: {
+			type: DataTypes.DATE,
+			allowNull: false
+		},
+		endDate: {
+			type: DataTypes.DATE,
+			allowNull: false
+		}
 	});
 
 	// Foreign Key associations

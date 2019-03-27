@@ -12,11 +12,36 @@ router.use(bodyParser.json());
 
 // Create job in DB
 router.post('/create', function (req, res) {
-    return Job.create({
+  // TODO: validate job here
+  
+  return Job.create({
         jobId: req.body.jobId,
         name: req.body.name,
+        frequency: req.body.frequency,
+        startDate: req.body.startDate,
+        endDate: req.body.endDate,
         experimentId: req.body.experimentId
       }).then(function (newJob) {
+        time = 0;
+        req.body.positions.forEach(element => {
+          Position.create({
+            positionId: element.positionId,
+            name: element.name,
+            xPos: element.xPos,
+            yPos: element.yPos,
+            zPos: element.zPos,
+            jobId: newJob.jobId,
+            experimentId: newJob.experimentId
+          }).then(function (newPosition) {
+            res.send(newPosition);
+          }).catch((err) => {
+            res.send(err);
+          });
+        });
+
+        // TODO: create job commands here
+        createJobCommands(newJob.jobId);
+
         res.send(newJob);
       }).catch((err) => {
         res.send(err);
@@ -28,10 +53,13 @@ router.post('/update', function (req, res) {
   return Job.update({
     jobId: req.body.jobId,
     name: req.body.name,
+    frequency: req.body.frequency,
+    startDate: req.body.startDate,
+    endDate: req.body.endDate,
     experimentId: req.body.experimentId
   },
     {
-      where: { jobtId: req.body.jobId }
+      where: { jobId: req.body.jobId }
     }
   ).then(function() {
     getById(req.body.jobId).then(function (job) {
@@ -61,6 +89,32 @@ function getById(jobId) {
       where: { jobId: jobId },
     }
   );
+}
+
+function createJobCommands(jobId) {
+  var curr = getById(jobId);
+  var time = startDate.getTime();
+  var numPositions;
+
+  while(time < endDate.getTime()) {
+    numPositions = 0;
+    
+    curr.getPositions().forEach(elem =>  {
+      createJobCommands.create({
+        time: time,
+        positionId: elem.positionId
+      }).then(function (newJobCommand){
+        res.send(newJobCommand);
+      }).catch((err) => {
+        res.send(err);
+      });
+
+      time += 60000; // incrementing time by 1 minute
+      numPositions++;
+    });
+
+    time += ((curr.frequency * 60)-numPositions)*60000;
+  }
 }
 
 module.exports.router = router
