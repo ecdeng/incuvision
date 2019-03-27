@@ -71,22 +71,4 @@ function getById(positionId) {
   );
 }
 
-/* Update function does this already */
-// // Associate position with an experiment
-// router.post("/updateAssociatedExperiment", (req, res) =>{
-//   return Position.update({
-//     experimentId: req.body.experimentId,
-//   },
-//     {
-//       where: { positionId: req.body.positionId }
-//     }
-//   ).then(function() {
-//     getById(req.body.positionId).then(function (position) {
-//       res.send(position);
-//     });
-//   }).catch((err) => {
-//     res.send(err);
-//   });
-// });
-
 module.exports.router = router;

@@ -2,8 +2,9 @@
 # routing constants
 COM_PORT = "com3"
 CON_ROUTE = "connect"
-MOVE_ROUTE = "move"
+MOVE_ROUTE = "move_command"
 DISCONNECT_ROUTE = "disconnect"
+SERVER_RESPONSE_ROUTE = "server_response"
 
 # socket communication paramaters (dictionary keys)
 CURR_POINT_PARAM = "curr"

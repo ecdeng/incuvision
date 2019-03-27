@@ -14,6 +14,7 @@ const PositionRoutes = require('./PositionRoutes.js').router;
 const ImageRoutes = require('./ImageRoutes.js').router;
 const JobRoutes = require('./JobRoutes.js').router;
 const JobCommandRoutes = require('./JobCommandRoutes.js').router;
+const MoveRoutes = require('./MoveRoutes.js').router;
 
 // Express Router object (mounted in index.js)
 const router = express.Router();
@@ -41,6 +42,7 @@ router.use('/positions', PositionRoutes);
 router.use('/images', ImageRoutes);
 router.use('/jobs', JobRoutes);
 router.use('/jobCommands', JobCommandRoutes);
+router.use('/move', MoveRoutes);
 
 // Index route
 router.get('/', auth.required, (req, res) => {
@@ -49,17 +51,22 @@ router.get('/', auth.required, (req, res) => {
 
 // Home page
 router.get('/home', auth.required, (req, res) => {
-	res.render('home', { username: req.user.username });
+	res.render('home');
 });
 
 // Experiments page
 router.get('/experiments', auth.required, (req, res) => {
-	res.render('experiments', { username: req.user.username });
+	res.render('experiments');
+});
+
+// Create Experiment page
+router.get('/experiments/new', auth.required, (req, res) => {
+	res.render('experiment_new');
 });
 
 // Individual Experiment page
 router.get('/experiments/:id', auth.required, (req, res) => {
-	res.render('experiment_individual', { username: req.user.username, experimentId: req.params.id });
+	res.render('experiment_individual', { experimentId: req.params.id });
 });
 
 // Login page
