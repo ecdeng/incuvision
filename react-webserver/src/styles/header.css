@@ -1,11 +1,11 @@
-body {
+.main {
 	display: flex;
 	flex-direction: column;
 }
-
-body > div {
+/* 
+.main > div {
 	flex: 1;
-}
+} */
 
 .header {
 	flex: 0 1 auto;
@@ -45,4 +45,24 @@ body > div {
 
 .user-btn:active .fa-user {
 	color: #bbb;
+}
+
+.navbar {
+	background-color: #3D434F;
+}
+
+.navbar ul {
+	display: flex;
+	justify-content: center;
+}
+
+.navbar ul a{
+	color: white;
+	font-family: Helvetica, sans-serif;
+	font-weight: bold;
+	padding: 5px 10px;
+}
+
+.active {
+	background-color: #282C34;
 }

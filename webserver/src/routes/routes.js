@@ -13,6 +13,7 @@ const ExperimentRoutes = require('./ExperimentRoutes.js').router;
 const PositionRoutes = require('./PositionRoutes.js').router;
 const ImageRoutes = require('./ImageRoutes.js').router;
 const JobRoutes = require('./JobRoutes.js').router;
+const JobCommandRoutes = require('./JobCommandRoutes.js').router;
 const MoveRoutes = require('./MoveRoutes.js').router;
 
 // Express Router object (mounted in index.js)
@@ -40,6 +41,7 @@ router.use('/experiments', ExperimentRoutes);
 router.use('/positions', PositionRoutes);
 router.use('/images', ImageRoutes);
 router.use('/jobs', JobRoutes);
+router.use('/jobCommands', JobCommandRoutes);
 router.use('/move', MoveRoutes);
 
 // Index route
