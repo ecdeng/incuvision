@@ -28,27 +28,27 @@ class ComHandler:
             data_arr = data.split('#')
             point_data = data_arr[1]
             if (len(data_arr) != 2):
-                self.sio.send(const.INVALID_MESSAGE_ERROR)
+                self.sio.emit(const.SERVER_RESPONSE_ROUTE, const.INVALID_MESSAGE_ERROR)
             old_point_str = point_data[const.CURR_POINT_PARAM]
             if not self.point_is_valid(old_point_str):
-                self.sio.send(const.INVALID_POINT_ERROR)
+                self.sio.emit(const.SERVER_RESPONSE_ROUTE, const.INVALID_POINT_ERROR)
                 return
             old_point = self.str_to_tuple(old_point_str)
 
             # assert the old points are in sync
             if self.curr_point is not None and self.curr_point != old_point:
-                self.sio.send(const.OUT_OF_SYNC_ERROR)
+                self.sio.emit(const.SERVER_RESPONSE_ROUTE, const.OUT_OF_SYNC_ERROR)
                 return
             new_point_str = point_data[const.NEW_POINT_PARAM]
             if not self.point_is_valid(new_point_str):
-                self.sio.send(const.INVALID_POINT_ERROR)
+                self.sio.emit(const.SERVER_RESPONSE_ROUTE, const.INVALID_POINT_ERROR)
                 return
             new_point = self.str_to_tuple(new_point_str)
 
             # create the move
             delta = (new_point[0] - old_point[0], new_point[1] - old_point[1])
             if delta[0] > const.MOTOR_MAX_MOVE or delta[1] > const.MOTOR_MAX_MOVE:
-                self.sio.send(const.INVALID_MOVE_ERROR)
+                self.sio.emit(const.SERVER_RESPONSE_ROUTE, const.INVALID_MOVE_ERROR)
                 return
             moves = self.convert_move_cmd(delta)
 
@@ -56,14 +56,14 @@ class ComHandler:
             if not con_arduino:
                 print('con_arduino move simulated: ' + moves)
                 self.curr_point = new_point
-                self.sio.send(const.FINISHED_WITH_NO_ERRORS_RESP)
+                self.sio.emit(const.SERVER_RESPONSE_ROUTE, const.FINISHED_WITH_NO_ERRORS_RESP)
                 return
             if self.controller.exec_cmd(moves[0]) == const.ARDUINO_BAD_RESP:
-                self.sio.send(const.BAD_ARDUINO_RESP_ERROR)
+                self.sio.emit(const.SERVER_RESPONSE_ROUTE, const.BAD_ARDUINO_RESP_ERROR)
             if self.controller.exec_cmd(moves[1]) == const.ARDUINO_BAD_RESP:
-                self.sio.send(const.BAD_ARDUINO_RESP_ERROR)
+                self.sio.emit(const.SERVER_RESPONSE_ROUTE, const.BAD_ARDUINO_RESP_ERROR)
             self.curr_point = new_point
-            self.sio.send(const.FINISHED_WITH_NO_ERRORS_RESP)
+            self.sio.emit(const.SERVER_RESPONSE_ROUTE, const.FINISHED_WITH_NO_ERRORS_RESP)
 
         @self.sio.on(const.DISCONNECT_ROUTE)
         def on_disconnect():

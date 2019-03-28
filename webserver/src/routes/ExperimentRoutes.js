@@ -13,27 +13,13 @@ router.use(bodyParser.json());
 
 // Create experiment in DB
 router.post('/create', function (req, res) {
-  /* create a bunch of positions from req.body 
-    then create the experiment below */
+  //  TODO: validate experiment here
+  
   return Experiment.create({
     experimentId: req.body.experimentId,
     name: req.body.name,
     description: req.body.description
   }).then(function (newExperiment) {
-    req.body.positions.forEach(element => {
-      Position.create({
-        positionId: element.positionId,
-        name: element.name,
-        xPos: element.xPos,
-        yPos: element.yPos,
-        zPos: element.zPos,
-        experimentId: newExperiment.experimentId
-      }).then(function (newPosition) {
-        res.send(newPosition);
-      }).catch((err) => {
-        res.send(err);
-      });
-    });
     res.send(newExperiment);
   }).catch((err) => {
     res.send(err);
