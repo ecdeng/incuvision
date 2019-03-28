@@ -35,7 +35,7 @@ module.exports = function (sequelize, DataTypes) {
 				allowNull: true
 			}
 		});
-		this.hasMany(model.Job, {
+		this.hasMany(models.Job, {
 			foreignKey: {
 				name: 'experimentId',
 				allowNull: true
