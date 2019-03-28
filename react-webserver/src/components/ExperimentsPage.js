@@ -1,37 +1,58 @@
 import React from 'react';
+import axios from 'axios';
 import '../styles/experiments.css';
 
 class ExperimentsPage extends React.Component {
+	render() {
+		return (
+			<div className="experimentsArea">
+				<h2>Experiments</h2>
+				<ExperimentList />
+			</div>
+		);
+	}
+}
+
+class ExperimentList extends React.Component {
 	constructor(props) {
 		super(props);
+
+		/* Initialize state */
+		this.state = {
+			experiments: [],
+		}
+	}
+
+	componentDidMount() {
+		axios.get("http://localhost:3000/experiments/getAll")
+			.then(res => {
+				this.setState({ experiments: res.data });
+			});
 	}
 
 	render() {
 		return (
-			<div className="main">
-				<h2>Experiments</h2>
-				<ul className="experimentList"><a className="experimentLink" href="experiments/new">
+			<ul className="experimentList">
+				<a className="experimentLink" href="/new-experiment/">
 					<li className="experiment new">
 						<h3>Add New Experiment</h3><span className="fa-stack fa-2x"><i className="far fa-circle fa-stack-2x"></i><i className="fa fa-plus fa-stack-1x"></i></span>
 					</li>
-				</a><a className="experimentLink" href="experiments/1">
-						<li className="experiment">
-							<div className="textArea">
-								<h3 className="experimentId">Experiment 01</h3>
-								<h4 className="experimentName">Experiment Name: RatExperiment</h4>
-								<p className="experimentDescription">This experiment was designed to test the efficacy of protocol IE-3234-1 on rat cells.</p>
-							</div>
-						</li>
-					</a><a className="experimentLink" href="experiments/2">
-						<li className="experiment">
-							<div className="textArea">
-								<h3 className="experimentId">Experiment 02</h3>
-								<h4 className="experimentName">Experiment Name: HumanTrials</h4>
-								<p className="experimentDescription">After the success of experiment 01, this experiment tests the efficacy of protocol IE-3234-1 on human cells.</p>
-							</div>
-						</li>
-					</a></ul>
-			</div>
+				</a>
+				{this.state.experiments.map(experiment => {
+					return (
+						<a key={experiment.experimentId} className="experimentLink" href={"/experiments/" + experiment.experimentId}>
+							<li className="experiment">
+								<div className="textArea">
+									<h3 className="experimentId">{"Experiment " + experiment.experimentId}</h3>
+									<h4 className="experimentName">{"Experiment Name: " + experiment.name}</h4>
+									<p className="experimentDescription">{experiment.description}</p>
+								</div>
+							</li>
+						</a>
+					);
+				})}
+
+			</ul>
 		);
 	}
 }

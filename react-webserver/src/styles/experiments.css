@@ -1,10 +1,10 @@
-.main {
+.experimentsArea {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
 
-.main h2 {
+.experimentsArea h2 {
 	color: black;
 	margin-top: 20px;
 }
