@@ -2,9 +2,9 @@
 # routing constants
 COM_PORT = "com3"
 CON_ROUTE = "connect"
-MOVE_ROUTE = "move_command"
+MOVE_ROUTE = "server_move_request"
 DISCONNECT_ROUTE = "disconnect"
-SERVER_RESPONSE_ROUTE = "server_response"
+ARDUINO_MOVE_RESPONSE_ROUTE = "arduino_move_response"
 
 # socket communication paramaters (dictionary keys)
 CURR_POINT_PARAM = "curr"

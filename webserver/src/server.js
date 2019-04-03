@@ -33,28 +33,23 @@ app.locals.abs_pos = (0, 0);
 const io = require('socket.io')(server);
 app.set('io', io);
 
-io.on('connection', function(socket){
+io.on(consts.main_socket_connection_route, function(socket){
   console.log(`new connection: ${socket.id}`);
 
-  //web client events
-  socket.on(consts.web_client_route, (msg) => {
-    console.log(msg);
-  });
-
-  socket.on(consts.web_command_route, (msg) => {
+  socket.on(consts.client_move_request_sroute, (msg) => {
     console.log('received web-command');
     if (!custom_utils.isValidPointStr(msg)) {
-      io.emit(consts.error_status_route, consts.invalid_move_str_err);
+      io.emit(consts.client_error_status_sroute, consts.invalid_move_str_err);
       return;
     }
     if (app.locals.move_in_progress) {
-      io.emit(consts.error_status_route, consts.move_collision_err);
+      io.emit(consts.client_error_status_sroute, consts.move_collision_err);
       return;
     }
     console.log(`emitting move-command: ${msg}`);
     app.locals.move_in_progress = true;
     app.locals.move_str_in_progress = msg;
-    io.emit(consts.move_command_route, msg);
+    io.emit(consts.server_move_request_sroute, msg);
   });
 
   socket.on(consts.server_response_route, (msg) => {

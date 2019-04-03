@@ -1,10 +1,8 @@
-exports.python_client_route = 'python_client_connected';
-exports.web_client_connect_route = 'web_client_connected';
-exports.web_command_route = 'web_command';
-exports.move_command_route = 'move_command';
-exports.disconnect_route = 'disconnect';
-exports.error_status_route = 'error_status';
-exports.server_response_route = 'server_response';
+exports.main_socket_connection_route = 'connection';
+exports.client_move_request_sroute = 'client_move_request';
+exports.client_error_status_sroute = 'error_status';
+exports.server_move_request_sroute = 'server_move_request';
+exports.arduino_move_response_sroute = 'arduino_move_response';
 
 exports.invalid_move_str_err = 'invalid_move_str_err';
 exports.move_collision_err = 'move_collision_err';

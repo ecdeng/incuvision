@@ -1,7 +1,13 @@
 import React from 'react';
 import '../styles/home.css';
+import socketIOClient from "socket.io-client";
 
 class HomePage extends React.Component {
+	constructor() {
+		super();
+		this.setState = {'message status' : ''};
+	}
+
 	render() {
 		return (
 			<div className="home">
