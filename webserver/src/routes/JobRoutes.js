@@ -100,7 +100,7 @@ function createJobCommands(jobId) {
     numPositions = 0;
     
     curr.getPositions().forEach(elem =>  {
-      createJobCommands.create({
+      JobCommand.create({
         time: time,
         positionId: elem.positionId
       }).then(function (newJobCommand){

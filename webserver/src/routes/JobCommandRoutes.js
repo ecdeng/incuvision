@@ -22,16 +22,42 @@ router.post('/create', function (req, res) {
     });
 });
 
-// Get all jobCommands in DB
+// Get all jobCommands in DB in order
 router.get("/getAll", (req, res) => {
-  return JobCommand.findAll()
-    .then(function (jobCommands) {
+  return JobCommand.findAll({
+    order: [
+      ['time', 'ASC'],
+    ]
+  }).then(function (jobCommands) {
       res.send(jobCommands);
     })
 });
 
-// Sort jobCommands
+// Get soonest JobCommand in DB
+router.get("/getSoonest", (req, res)=> {
+  return JobCommand.min('time').then(min => {})
+});
 
-// Delete jobCommand by time / position combo
+// Move caller and handler
+function callMove() {
+  // call move on move that's up
+  
+  moveToMake = JobCommand.min('time');
+  // call move here on moveToMake (adjust for whatever args move requires)
+  
+  // remove completed move from DB
+  JobCommand.destroy({
+    where: {
+      time: {
+        [Op.lt]: Date.now()
+      }
+    }
+  });
+
+  // set timer to next move
+  var soonestMove = JobCommand.min('time').then(min => {});
+  var timeTillMove = soonestMove - Date.now();
+  setTimeout(callMove(), timeTillMove);
+}
 
 module.exports.router = router
