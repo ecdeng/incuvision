@@ -11,7 +11,7 @@
 ### If you've already got a MySQL setup you like, all you need to do is modify the very top of DBManager.js. Otherwise, follow the instructions below!
 1. Install [XAMPP](https://www.apachefriends.org/download.html).
 2. Open XAMPP and make sure the MySQL Database is running.
-3. Open your browser and navigate to `localhost/phpmyadmin`.
+3. Open your browser and navigate to `localhost/phpmyadmin` (if this dosent load run the apache server from the xampp control panel).
 4. Create a new database by clicking the "New" button at the top of the column on the left.
 5. Name the database "incuvision" if you don't wanna modify any files at all. Otherwise, name the database whatever you'd like, and go adjust the top of DBManager.js appropriately.
 6. That's it! Sequelize should take care of the rest. If you want, you can manually drop tables or add/drop rows using phpmyadmin.

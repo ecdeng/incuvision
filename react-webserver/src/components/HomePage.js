@@ -1,14 +1,35 @@
 import React from 'react';
 import '../styles/home.css';
-import socketIOClient from "socket.io-client";
+import socketIOClient from 'socket.io-client';
 
 class HomePage extends React.Component {
 	constructor() {
 		super();
-		this.setState = {'message status' : ''};
+		this.state = {message_status : '', x_move : '', y_move : '', endpoint: 'http://127.0.0.1:4001'};
+	}
+
+	componentDidMount() {
+		const { endpoint } = this.state;
+		const socket = socketIOClient(endpoint);
+		socket.on('error_status', (msg) => {
+			this.setState({message_status : msg});
+		});
+	}
+
+	handleSendMoveCommand = (e) => {
+		e.preventDefault();
+		alert('working');
+		const x = e.target.x_move.value;
+		const y = e.target.y_move.value;
+		const moveStr = '(' + x + ',' + y + ')';
+		console.log('in form submit for move, movestr=' + moveStr);
+		const { endpoint } = this.state;
+		const socket = socketIOClient(endpoint);
+		socket.emit('client_move_request', moveStr);
 	}
 
 	render() {
+		const {message_status} = this.state;
 		return (
 			<div className="home">
 				<div className="leftPane">
@@ -43,16 +64,17 @@ class HomePage extends React.Component {
 					</div>
 					<div className="manualChanges">
 						<h3>Manually Change Position</h3>
+						<p>{message_status}</p>
 						<div className="positionArea">
 							<div className="positionInputArea">
-								<form className="absoluteChange changeForm" action=""> <span>Absolute Position</span>
+								<form className="absoluteChange changeForm" onSubmit={this.handleSendMoveCommand}> <span>Absolute Position</span>
 									<div className="formgroup">
 										<label>x:</label>
-										<input type="text" />
+										<input name="x_move" type="text" />
 									</div>
 									<div className="formgroup">
 										<label>y:</label>
-										<input type="text" />
+										<input name="y_move" type="text" />
 									</div>
 									<input type="submit" value="Move" />
 								</form>
