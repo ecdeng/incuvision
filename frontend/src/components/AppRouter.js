@@ -5,6 +5,8 @@ import ExperimentsPage from './ExperimentsPage';
 import IndividualExperimentPage from './IndividualExperimentPage';
 import NewExperimentPage from './NewExperimentPage';
 import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
+import PrivateRoute from './PrivateRoute';
+import auth from '../authentication';
 
 function Home() {
 	return <HomePage />;
@@ -40,10 +42,10 @@ function AppRouter() {
 							to="/new-experiment/"><li> New Experiment </li></NavLink>
 					</ul>
 				</nav>
-				<Route exact path="/" component={Home} />
-				<Route exact path="/experiments/" component={Experiments} />
-				<Route path="/new-experiment/" component={NewExperiment} />
-				<Route path="/experiments/:experimentId" component={IndivudalExperiment} />
+				<PrivateRoute redirect="/login" authMethod={auth.required} exact path="/" component={Home} />
+				<PrivateRoute redirect="/login" authMethod={auth.required} exact path="/experiments/" component={Experiments} />
+				<PrivateRoute redirect="/login" authMethod={auth.required} path="/new-experiment/" component={NewExperiment} />
+				<PrivateRoute redirect="/login" authMethod={auth.required} path="/experiments/:experimentId" component={IndivudalExperiment} />
 			</div>
 		</Router>
 	);
