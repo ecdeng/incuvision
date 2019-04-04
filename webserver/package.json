@@ -2,7 +2,11 @@
   "name": "incuvision-webserver",
   "version": "1.0.0",
   "description": "webserver for Incuvision",
-  "main": "index.js",
+	"main": "src/server.js",
+	"engines": {
+		"node": "10.15.0",
+		"npm": "6.9.0"
+  },
   "dependencies": {
     "ejs": "^2.6.1",
     "express": "^4.16.4",
@@ -26,8 +30,12 @@
   },
   "scripts": {
     "test": "jest",
+    "frontend-install": "npm install --prefix frontend",
+    "frontend": "npm start --prefix frontend",
+    "server": "nodemon ./src/server.js",
     "start": "node ./src/server.js",
-    "dev": "nodemon ./src/server.js"
+    "dev": "concurrently \"npm run server\" \"npm run frontend\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
   },
   "nodemon": {
     "ignore": [

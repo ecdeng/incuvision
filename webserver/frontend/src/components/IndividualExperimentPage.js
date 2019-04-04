@@ -13,7 +13,7 @@ class IndividualExperimentPage extends React.Component {
 	}
 
 	componentDidMount() {
-		axios.get("http://localhost:3000/experiments/getById?experimentId=" + this.props.experimentId)
+		axios.get("http://localhost:5000/experiments/getById?experimentId=" + this.props.experimentId)
 			.then(res => {
 				this.setState({experiment: res.data});
 				console.log(res.data);

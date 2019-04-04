@@ -42,10 +42,15 @@ function AppRouter() {
 							to="/new-experiment/"><li> New Experiment </li></NavLink>
 					</ul>
 				</nav>
-				<PrivateRoute redirect="/login" authMethod={auth.required} exact path="/" component={Home} />
+				<Route exact path="/" component={Home} />
+				<Route exact path="/experiments/" component={Experiments} />
+				<Route path="/new-experiment/" component={NewExperiment} />
+				<Route path="/experiments/:experimentId" component={IndivudalExperiment} />
+
+				{/* <PrivateRoute redirect="/login" authMethod={auth.required} exact path="/" component={Home} />
 				<PrivateRoute redirect="/login" authMethod={auth.required} exact path="/experiments/" component={Experiments} />
 				<PrivateRoute redirect="/login" authMethod={auth.required} path="/new-experiment/" component={NewExperiment} />
-				<PrivateRoute redirect="/login" authMethod={auth.required} path="/experiments/:experimentId" component={IndivudalExperiment} />
+				<PrivateRoute redirect="/login" authMethod={auth.required} path="/experiments/:experimentId" component={IndivudalExperiment} /> */}
 			</div>
 		</Router>
 	);

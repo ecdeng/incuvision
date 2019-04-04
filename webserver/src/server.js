@@ -1,10 +1,11 @@
 const express = require('express');
 const util = require('./middleware');
-const app = express();
+const path = require('path');
 const custom_utils = require('./utils.js');
 const consts = require('./consts.js');
-
 const http = require('http');
+
+const app = express();
 
 // Allow web client to access API on same server (need to do this BEFORE mounting router)
 app.use(util.allowCrossDomain);
@@ -15,15 +16,29 @@ app.set('views', 'public/views/');
 app.set('view engine', 'pug');
 
 // Express app setup
-app.use(express.static(__dirname + '/../public'));
+app.use(express.static(path.join(__dirname, '../frontend/build')));
 const routes = require('./routes/routes');
 app.use('/', routes);
 
-// 404 Route -- see middleware.js for explanation of why we .use() this here, not in routes.js
+// Production mode
+if (process.env.NODE_ENV === 'production') {
+	app.use(express.static(path.join(__dirname, '../frontend/build')));
+	app.get('/', (req, res) => {
+		res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
+	})
+}
+
+//Dev mode
+app.get('/app', (req, res) => {
+	res.sendFile(path.join(__dirname, '../frontend/public/index.html'));
+})
+
+// 404 Route -- Always mounted LAST!
+// See middleware.js for explanation of why we .use() this here, not in routes.js
 app.use(util.fourohfour);
 
 // Server setup
-let port = process.env.PORT || 3000;
+let port = process.env.PORT || 5000; //React app runs on 3000
 const server = http.createServer(app);
 app.locals.move_in_progress = false;
 app.locals.move_str_in_progress = '';

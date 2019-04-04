@@ -24,7 +24,7 @@ class ExperimentList extends React.Component {
 	}
 
 	componentDidMount() {
-		axios.get("http://localhost:3000/experiments/getAll")
+		axios.get("http://localhost:5000/experiments/getAll")
 			.then(res => {
 				this.setState({ experiments: res.data });
 			});
