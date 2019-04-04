@@ -30,8 +30,11 @@ passport.serializeUser(function (user, cb) {
 });
 
 passport.deserializeUser(function (userId, cb) {
+	console.log("deserializeUser called");
+	
 	users.methods.getById(userId)
 		.then((user) => {
+			localStorage.setItem("user", user);
 			cb(null, user);
 		})
 		.catch((err) => cb(err));

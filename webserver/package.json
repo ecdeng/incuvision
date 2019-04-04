@@ -2,16 +2,17 @@
   "name": "incuvision-webserver",
   "version": "1.0.0",
   "description": "webserver for Incuvision",
-	"main": "src/server.js",
-	"engines": {
-		"node": "10.15.0",
-		"npm": "6.9.0"
+  "main": "src/server.js",
+  "engines": {
+    "node": "10.15.0",
+    "npm": "6.9.0"
   },
   "dependencies": {
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "express-jwt": "^5.3.1",
     "express-session": "^1.15.6",
+    "history": "^4.9.0",
     "html": "^1.0.0",
     "jsonwebtoken": "^8.4.0",
     "mysql2": "^1.6.5",

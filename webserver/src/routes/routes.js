@@ -79,7 +79,7 @@ router.post('/login', (req, res) => {
 	passport.authenticate('local', function (err, user, info) {
 		if (err) { return res.send(err) }
 		if (!user) {
-			return res.send('No user!');
+			return res.send({authenticated: "false"});
 		}
 
 		req.login(user, function (err) {
@@ -88,14 +88,15 @@ router.post('/login', (req, res) => {
 				console.log(err);
 				res.send(err);
 			}
+			return res.send({authenticated:"true"});
 			// If the user had another intended destination, go there
-			if (req.session.previous) {
-				let redirUrl = req.session.previous;
-				req.session.previous = null;
-				return res.redirect(redirUrl);
-			}
-			// Else, go home
-			else return res.redirect('/');
+			// if (req.session.previous) {
+			// 	let redirUrl = req.session.previous;
+			// 	req.session.previous = null;
+			// 	return res.redirect(redirUrl);
+			// }
+			// // Else, go home
+			// else return res.redirect('/');
 		});
 	})(req, res);
 });

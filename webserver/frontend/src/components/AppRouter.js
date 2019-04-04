@@ -7,6 +7,11 @@ import NewExperimentPage from './NewExperimentPage';
 import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
 import PrivateRoute from './PrivateRoute';
 import auth from '../authentication';
+import LoginPage from "./LoginPage";
+
+const authenticate = () => {
+	return (localStorage.getItem("authenticated") === "true");
+}
 
 function Home() {
 	return <HomePage />;
@@ -24,36 +29,42 @@ function NewExperiment() {
 	return <NewExperimentPage />;
 }
 
-function AppRouter() {
-	return (
-		<Router>
-			<div className="main">
-				<Header />
-				<nav className="navbar">
-					<ul>
-						<NavLink exact
-							activeClassName="active"
-							to="/"><li> Home </li></NavLink>
-						<NavLink exact
-							activeClassName="active"
-							to="/experiments/"><li> Experiments </li></NavLink>
-						<NavLink exact
-							activeClassName="active"
-							to="/new-experiment/"><li> New Experiment </li></NavLink>
-					</ul>
-				</nav>
-				<Route exact path="/" component={Home} />
-				<Route exact path="/experiments/" component={Experiments} />
-				<Route path="/new-experiment/" component={NewExperiment} />
-				<Route path="/experiments/:experimentId" component={IndivudalExperiment} />
+class AppRouter extends React.Component {
+	render() {
+		// const { history } = props;
+		// console.log("You are now at " + history.location.pathname);
 
-				{/* <PrivateRoute redirect="/login" authMethod={auth.required} exact path="/" component={Home} />
-				<PrivateRoute redirect="/login" authMethod={auth.required} exact path="/experiments/" component={Experiments} />
-				<PrivateRoute redirect="/login" authMethod={auth.required} path="/new-experiment/" component={NewExperiment} />
-				<PrivateRoute redirect="/login" authMethod={auth.required} path="/experiments/:experimentId" component={IndivudalExperiment} /> */}
-			</div>
-		</Router>
-	);
+		return (
+			<Router>
+				<div className="main">
+					<Header />
+					<nav className="navbar">
+						<ul>
+							<NavLink exact
+								activeClassName="active"
+								to="/"><li> Home </li></NavLink>
+							<NavLink exact
+								activeClassName="active"
+								to="/experiments/"><li> Experiments </li></NavLink>
+							<NavLink exact
+								activeClassName="active"
+								to="/new-experiment/"><li> New Experiment </li></NavLink>
+						</ul>
+					</nav>
+					{/* <Route exact path="/" component={Home} />
+					<Route exact path="/experiments/" component={Experiments} />
+					<Route exact path="/new-experiment/" component={NewExperiment} />
+					<Route exact path="/experiments/:experimentId" component={IndivudalExperiment} /> */}
+					<Route exact path="/login" component={LoginPage} />
+
+					<PrivateRoute redirect="/login" authMethod={authenticate} exact path="/" component={Home} />
+					<PrivateRoute redirect="/login" authMethod={authenticate} exact path="/experiments/" component={Experiments} />
+					<PrivateRoute redirect="/login" authMethod={authenticate} path="/new-experiment/" component={NewExperiment} />
+					<PrivateRoute redirect="/login" authMethod={authenticate} path="/experiments/:experimentId" component={IndivudalExperiment} />
+				</div>
+			</Router>
+		);
+	}
 }
 
 // function PrivateRoute({ component: Component, ...rest }) {

@@ -3,7 +3,7 @@
 
 html, body { margin: 0; padding: 0; }
 
-html, body, #root, .app, .app>div {
+html, body, #root, #root>div, .app, .app>div {
   height: 100%;
 }
 
