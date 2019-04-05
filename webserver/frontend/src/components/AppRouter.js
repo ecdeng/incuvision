@@ -4,7 +4,7 @@ import HomePage from './HomePage';
 import ExperimentsPage from './ExperimentsPage';
 import IndividualExperimentPage from './IndividualExperimentPage';
 import NewExperimentPage from './NewExperimentPage';
-import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Route, NavLink } from "react-router-dom";
 import PrivateRoute from './PrivateRoute';
 import auth from '../authentication';
 import LoginPage from "./LoginPage";
@@ -51,19 +51,28 @@ class AppRouter extends React.Component {
 								to="/new-experiment/"><li> New Experiment </li></NavLink>
 						</ul>
 					</nav>
-					{/* <Route exact path="/" component={Home} />
-					<Route exact path="/experiments/" component={Experiments} />
-					<Route exact path="/new-experiment/" component={NewExperiment} />
-					<Route exact path="/experiments/:experimentId" component={IndivudalExperiment} /> */}
 					<Route exact path="/login" component={LoginPage} />
 
 					<PrivateRoute redirect="/login" authMethod={authenticate} exact path="/" component={Home} />
 					<PrivateRoute redirect="/login" authMethod={authenticate} exact path="/experiments/" component={Experiments} />
-					<PrivateRoute redirect="/login" authMethod={authenticate} path="/new-experiment/" component={NewExperiment} />
-					<PrivateRoute redirect="/login" authMethod={authenticate} path="/experiments/:experimentId" component={IndivudalExperiment} />
-					<PrivateRoute redirect="/login" authMethod={authenticate} path="/logout" component={IndivudalExperiment} />
+					<PrivateRoute redirect="/login" authMethod={authenticate} exact path="/new-experiment/" component={NewExperiment} />
+					<PrivateRoute redirect="/login" authMethod={authenticate} exact path="/experiments/:experimentId" component={IndivudalExperiment} />
+					<PrivateRoute redirect="/login" authMethod={authenticate} exact path="/logout" component={Logout} />
 				</div>
 			</Router>
+		);
+	}
+}
+
+class Logout extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+	
+	render() { 
+		localStorage.removeItem("authenticated");
+		return (
+			<Redirect to="/login" />
 		);
 	}
 }

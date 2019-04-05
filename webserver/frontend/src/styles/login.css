@@ -11,6 +11,10 @@ body {
 	justify-content: center;
 }
 
+.loginPage {
+	height: 100%;
+}
+
 .background::after {
 	z-index: -1;
 	content: "";
@@ -67,4 +71,15 @@ h2 {
 label {
 	font-family: Helvetica;
 	color: white;
+}
+
+.loggedIn {
+	margin-top: 20px;
+}
+
+.loggedIn h4 { 
+	color: black; 
+}
+.loggedIn a {
+	color: blue;
 }
