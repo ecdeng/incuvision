@@ -61,6 +61,7 @@ class AppRouter extends React.Component {
 					<PrivateRoute redirect="/login" authMethod={authenticate} exact path="/experiments/" component={Experiments} />
 					<PrivateRoute redirect="/login" authMethod={authenticate} path="/new-experiment/" component={NewExperiment} />
 					<PrivateRoute redirect="/login" authMethod={authenticate} path="/experiments/:experimentId" component={IndivudalExperiment} />
+					<PrivateRoute redirect="/login" authMethod={authenticate} path="/logout" component={IndivudalExperiment} />
 				</div>
 			</Router>
 		);

@@ -2,7 +2,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const fs = require('fs');u 
+const fs = require('fs');
 
 // User-created imports
 const util = require('../middleware');

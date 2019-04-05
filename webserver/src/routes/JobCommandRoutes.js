@@ -42,7 +42,7 @@ router.get("/getSoonest", (req, res)=> {
 function callMove() {
   // call move on move that's up
   
-  moveToMake = JobCommand.min('time');
+  let moveToMake = JobCommand.min('time');
   // call move here on moveToMake (adjust for whatever args move requires)
   
   // remove completed move from DB

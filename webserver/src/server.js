@@ -89,8 +89,8 @@ io.on(consts.main_socket_connection_route, function(socket){
 server.listen(port, () => {
   console.log(`Server listening on port ${port}!`);
 
-  var soonestMove = JobCommand.min('time').then(min => {});
-  var timeTillMove = soonestMove - Date.now();
-  setTimeout(JobCommand.callMove(), timeTillMove);
+  // var soonestMove = JobCommand.min('time').then(min => {});
+  // var timeTillMove = soonestMove - Date.now();
+  // setTimeout(JobCommand.callMove(), timeTillMove);
 
 });
