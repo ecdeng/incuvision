@@ -7,7 +7,8 @@ class LoginPage extends React.Component {
 		super(props);
 		this.state = {
 			username: "",
-			password: ""
+			password: "",
+			isAuthenticated: false,
 		}
 	}
 
@@ -25,13 +26,14 @@ class LoginPage extends React.Component {
 				console.log(res.data);
 				if (res.data.authenticated === "true") {
 					localStorage.setItem("authenticated", "true");
+					this.forceUpdate();
 				}
 			})
 			.catch((err) => (console.log(err)));
 	}
 
 	render() {
-		const isAuthenticated = (localStorage.getItem("authenticated") === "true");
+		const isAuthenticated = localStorage.getItem("authenticated") === "true";
 
 		return (
 			<div className="loginPage">

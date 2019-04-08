@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/experiments.css';
 
@@ -33,14 +34,14 @@ class ExperimentList extends React.Component {
 	render() {
 		return (
 			<ul className="experimentList">
-				<a className="experimentLink" href="/new-experiment/">
+				<Link to="/new-experiment/">
 					<li className="experiment new">
 						<h3>Add New Experiment</h3><span className="fa-stack fa-2x"><i className="far fa-circle fa-stack-2x"></i><i className="fa fa-plus fa-stack-1x"></i></span>
 					</li>
-				</a>
+				</Link>
 				{this.state.experiments.map(experiment => {
 					return (
-						<a key={experiment.experimentId} className="experimentLink" href={"/experiments/" + experiment.experimentId}>
+						<Link key={experiment.experimentId} className="experimentLink" to={"/experiments/" + experiment.experimentId}>
 							<li className="experiment">
 								<div className="textArea">
 									<h3 className="experimentId">{"Experiment " + experiment.experimentId}</h3>
@@ -48,7 +49,7 @@ class ExperimentList extends React.Component {
 									<p className="experimentDescription">{experiment.description}</p>
 								</div>
 							</li>
-						</a>
+						</Link>
 					);
 				})}
 

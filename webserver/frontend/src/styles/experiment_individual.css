@@ -24,6 +24,7 @@
 
 .pane { 
 	flex: 1; 
+	width: 0;
 
 	background-color: #EEF4FF;
 	border-radius: 5px;
@@ -57,4 +58,20 @@
 
 .allImagesLink > .fa-images {
 	margin-right: 5px;
+}
+
+
+.imageList {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.imageListItem {
+	margin: 10px 30px;
+}
+
+.imageListItem img {
+	max-width: 200px;
+	height: auto;
 }
