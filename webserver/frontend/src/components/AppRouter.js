@@ -6,7 +6,6 @@ import IndividualExperimentPage from './IndividualExperimentPage';
 import NewExperimentPage from './NewExperimentPage';
 import { BrowserRouter as Router, Redirect, Route, NavLink } from "react-router-dom";
 import PrivateRoute from './PrivateRoute';
-import auth from '../authentication';
 import LoginPage from "./LoginPage";
 
 const authenticate = () => {
@@ -65,10 +64,6 @@ class AppRouter extends React.Component {
 }
 
 class Logout extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-	
 	render() { 
 		localStorage.removeItem("authenticated");
 		return (

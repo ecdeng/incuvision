@@ -7,10 +7,10 @@ import React from 'react';
  * auth: the authentication object which provides needed methods -- see Auth.js
  * redirect: the path to redirect to on a failed authentication
  */
-const PrivateRoute = ({ component: Component, authMethod: isAuthenticated, redirect: redirect, ...rest }) => (
+const PrivateRoute = ({ component: Component, authMethod, redirect, ...rest }) => (
 	<Route {...rest} render={(props) => (
-		isAuthenticated() === true
-			? <Component authMethod={isAuthenticated} {...props} />
+		authMethod() === true
+			? <Component authMethod={authMethod} {...props} />
 			: <Redirect to={redirect} />
 	)} />
 )
