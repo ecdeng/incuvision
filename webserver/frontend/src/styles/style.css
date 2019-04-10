@@ -33,17 +33,17 @@ h3 { font-size: 2em; }
 h4 { font-size: 1.4em; }
 
 
-span, label, input {
+span, label, input, textarea {
 	color: black;
 	font-family: Helvetica, sans-serif;
 	font-size: 1em;
 }
 
-input {
-	color: #666;
+input,textarea {
+	color: #191919;
 }
 
-input:focus {
+input:focus, textarea:focus {
 	outline: none;
 }
 

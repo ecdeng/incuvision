@@ -49,7 +49,7 @@ class IndividualExperimentPage extends React.Component {
 					<div className="positionsArea pane">
 						<h4 className="black">Saved Positions For This Experiment</h4>
 						<ul className="positionsList">
-						{positions.map((pos) => (
+							{positions.map((pos) => (
 								<li className="positionListItem" data-id="1">
 									<span className="strong">Name:</span>
 									<span className="name">{pos.name}</span>
@@ -66,7 +66,7 @@ class IndividualExperimentPage extends React.Component {
 						<ul className="imageList">
 							{images.map((image) => (
 								<li className="imageListItem">
-									<img src={image.filepath} />
+									<img src={image.filepath} alt={image.name}/>
 									<div className="textArea">
 										<p>{image.name}</p>
 										<p>{image.timestamp}</p>

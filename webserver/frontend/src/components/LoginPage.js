@@ -45,11 +45,11 @@ class LoginPage extends React.Component {
 							<form onSubmit={this.handleLogin} className="loginForm">
 								<div className="row">
 									<label>username: </label>
-									<input type="text" name="username" onChange={this.handleUsernameChange} />
+									<input type="text" name="username" onChange={this.handleUsernameChange} tabIndex="1"/>
 								</div>
 								<div className="row">
 									<label>password: </label>
-									<input type="text" name="password" onChange={this.handlePasswordChange} />
+									<input type="text" name="password" onChange={this.handlePasswordChange} tabIndex="2"/>
 								</div>
 								<input type="submit" value="Log In" />
 							</form>
