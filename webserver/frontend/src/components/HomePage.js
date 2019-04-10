@@ -5,7 +5,7 @@ import socketIOClient from 'socket.io-client';
 class HomePage extends React.Component {
 	constructor() {
 		super();
-		this.state = {message_status : '', x_move : '', y_move : '', endpoint: 'http://127.0.0.1:4001'};
+		this.state = {message_status : '', x_move : '', y_move : '', endpoint: 'http://127.0.0.1:5000'};
 	}
 
 	componentDidMount() {
