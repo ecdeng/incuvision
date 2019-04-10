@@ -12,7 +12,7 @@ class ComHandler:
             self.controller.start()
         if not con_server:
             return
-        self.curr_point = None
+        self.curr_point = (0, 0)
         self.sio = socketio.Client()
 
         @self.sio.on(const.CON_ROUTE)
@@ -25,28 +25,13 @@ class ComHandler:
 
             # parse the move data recieved from the web-server
             print('on_move triggered, data: ', data)
-            data_arr = data.split('#')
-            point_data = data_arr[1]
-            if (len(data_arr) != 2):
-                self.sio.emit(const.ARDUINO_MOVE_RESPONSE_ROUTE, const.INVALID_MESSAGE_ERROR)
-            old_point_str = point_data[const.CURR_POINT_PARAM]
-            if not self.point_is_valid(old_point_str):
+            if not self.point_is_valid(data):
                 self.sio.emit(const.ARDUINO_MOVE_RESPONSE_ROUTE, const.INVALID_POINT_ERROR)
                 return
-            old_point = self.str_to_tuple(old_point_str)
-
-            # assert the old points are in sync
-            if self.curr_point is not None and self.curr_point != old_point:
-                self.sio.emit(const.ARDUINO_MOVE_RESPONSE_ROUTE, const.OUT_OF_SYNC_ERROR)
-                return
-            new_point_str = point_data[const.NEW_POINT_PARAM]
-            if not self.point_is_valid(new_point_str):
-                self.sio.emit(const.ARDUINO_MOVE_RESPONSE_ROUTE, const.INVALID_POINT_ERROR)
-                return
-            new_point = self.str_to_tuple(new_point_str)
+            new_point = self.str_to_tuple(data)
 
             # create the move
-            delta = (new_point[0] - old_point[0], new_point[1] - old_point[1])
+            delta = (new_point[0] - self.curr_point[0], new_point[1] - self.curr_point[1])
             if delta[0] > const.MOTOR_MAX_MOVE or delta[1] > const.MOTOR_MAX_MOVE:
                 self.sio.emit(const.ARDUINO_MOVE_RESPONSE_ROUTE, const.INVALID_MOVE_ERROR)
                 return
@@ -54,16 +39,16 @@ class ComHandler:
 
             # send the move to the arduino
             if not con_arduino:
-                print('con_arduino move simulated: ' + moves)
+                print('con_arduino move simulated: ', moves)
                 self.curr_point = new_point
-                self.sio.emit(const.ARDUINO_MOVE_RESPONSE_ROUTE, const.FINISHED_WITH_NO_ERRORS_RESP)
+                self.sio.emit(const.ARDUINO_MOVE_RESPONSE_ROUTE, const.ARDUINO_GOOD_RESP)
                 return
             if self.controller.exec_cmd(moves[0]) == const.ARDUINO_BAD_RESP:
                 self.sio.emit(const.ARDUINO_MOVE_RESPONSE_ROUTE, const.BAD_ARDUINO_RESP_ERROR)
             if self.controller.exec_cmd(moves[1]) == const.ARDUINO_BAD_RESP:
                 self.sio.emit(const.ARDUINO_MOVE_RESPONSE_ROUTE, const.BAD_ARDUINO_RESP_ERROR)
             self.curr_point = new_point
-            self.sio.emit(const.ARDUINO_MOVE_RESPONSE_ROUTE, const.FINISHED_WITH_NO_ERRORS_RESP)
+            self.sio.emit(const.ARDUINO_MOVE_RESPONSE_ROUTE, const.ARDUINO_GOOD_RESP)
 
         @self.sio.on(const.DISCONNECT_ROUTE)
         def on_disconnect():
@@ -79,6 +64,7 @@ class ComHandler:
     # Checks if the point string is valid
     def point_is_valid(self, s):
         assert(type(s) is str)
+        s = s.strip()
         if len(s) <= 2 or s[0] != '(' or s[-1] != ')':
             return False
         s = s[1:-1]
@@ -93,7 +79,7 @@ class ComHandler:
                 if not substr.isdigit():
                     return False
         
-        point = self.str_to_tuple(s)
+        point = self.str_to_tuple('(' + s + ')')
         # check that the point is an x, y pair
         if len(point) != 2:
             return False
@@ -104,7 +90,7 @@ class ComHandler:
 
     # Converts a point represented as a string to a tuple
     def str_to_tuple(self, s):
-        point_str = s[1:-1].split(',')
+        point_str = s.strip()[1:-1].split(',')
         point = (int(point_str[0].strip()), int(point_str[1].strip()))
         return point
 
@@ -115,7 +101,7 @@ class ComHandler:
         return x_move_str, y_move_str
 
 def main():
-    ComHandler(False, True) # real_arduino, real_server
+    ComHandler(False, True) # fake_arduino, real_server
 
 if __name__ == '__main__':
     main()

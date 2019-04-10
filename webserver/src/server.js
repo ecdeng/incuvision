@@ -52,36 +52,26 @@ io.on(consts.main_socket_connection_route, function(socket){
   console.log(`new connection: ${socket.id}`);
 
   socket.on(consts.client_move_request_sroute, (msg) => {
-    console.log('received web-command');
-    if (!custom_utils.isValidPointStr(msg)) {
-      io.emit(consts.client_error_status_sroute, consts.invalid_move_str_err);
-      return;
-    }
-    if (app.locals.move_in_progress) {
-      io.emit(consts.client_error_status_sroute, consts.move_collision_err);
-      return;
-    }
-    console.log(`emitting move-command: ${msg}`);
-    app.locals.move_in_progress = true;
-    app.locals.move_str_in_progress = msg;
-    io.emit(consts.server_move_request_sroute, msg);
+    custom_utils.emit_move_command(io, app, msg);
   });
 
-  socket.on(consts.server_response_route, (msg) => {
-    if (msg != consts.server_good_response_status) {
-      io.emit(consts.error_status_route, consts.server_err);
+  socket.on(consts.arduino_move_response_sroute, (msg) => {
+    console.log('recieved server response');
+    if (msg != consts.arduino_good_response_status) {
+      io.emit(consts.client_error_status_sroute, consts.server_err);
       console.log(`A SERVER ERROR HAS OCCURED: ${msg}`);
+      app.locals.move_in_progress = false;
       return;
     }
     move = custom_utils.moveStrToTuple(app.locals.move_str_in_progress);
     app.locals.abs_pos[0] = app.locals.abs_pos[0] + move[0];
     app.locals.abs_pos[1] = app.locals.abs_pos[1] + move[1];
     app.locals.move_in_progress = false;
-    io.emit(consts.error_status_route, consts.move_good_response_status);
+    io.emit(consts.client_error_status_sroute, consts.move_good_response_status);
   });
 
   //all socket events
-  socket.on(consts.disconnect_route, () => {
+  socket.on(consts.main_socket_disconnect_route, () => {
     console.log(`disconnected: ${socket.id}`);
   });
 });

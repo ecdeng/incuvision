@@ -1,3 +1,4 @@
+const consts = require('./consts.js');
 const MAX_MOTOR_VAL = 50000;
 
 isValidPointStr = function(pointStr) {
@@ -37,5 +38,22 @@ moveStrToTuple = function(pointStr) {
     return (parseInt(pointArr[0], parseInt(pointArr[1])));
 }
 
+emit_move_command = function(io, app, msg) {
+    console.log('received web-command');
+    if (!isValidPointStr(msg)) {
+      io.emit(consts.client_error_status_sroute, consts.invalid_move_str_err);
+      return;
+    }
+    if (app.locals.move_in_progress) {
+      io.emit(consts.client_error_status_sroute, consts.move_collision_err);
+      return;
+    }
+    console.log(`emitting move-command: ${msg}`);
+    app.locals.move_in_progress = true;
+    app.locals.move_str_in_progress = msg;
+    io.emit(consts.server_move_request_sroute, msg);
+}
+
 module.exports.isValidPointStr = isValidPointStr;
 module.exports.moveStrToTuple = moveStrToTuple;
+module.exports.emit_move_command = emit_move_command;

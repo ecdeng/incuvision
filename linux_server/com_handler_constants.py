@@ -9,7 +9,7 @@ ARDUINO_MOVE_RESPONSE_ROUTE = "arduino_move_response"
 # socket communication paramaters (dictionary keys)
 CURR_POINT_PARAM = "curr"
 NEW_POINT_PARAM = "new"
-SERVER_ADDRESS = "http://localhost:3000"
+SERVER_ADDRESS = "http://127.0.0.1:5000"
 INVALID_POINT_ERROR = "Error: Invalid point"
 INVALID_MESSAGE_ERROR = "Error: Invalid Message"
 OUT_OF_SYNC_ERROR = "Error: Current point is out of sync with the linux server"

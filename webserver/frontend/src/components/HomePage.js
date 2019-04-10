@@ -5,13 +5,14 @@ import socketIOClient from 'socket.io-client';
 class HomePage extends React.Component {
 	constructor() {
 		super();
-		this.state = {message_status : '', x_move : '', y_move : '', endpoint: 'http://127.0.0.1:5000'};
+		this.state = {message_status : '', x_move : '', y_move : '', endpoint: 'http://127.0.0.1:5000', current_position : '(0, 0)'};
 	}
 
 	componentDidMount() {
 		const { endpoint } = this.state;
-		const socket = socketIOClient(endpoint);
-		socket.on('error_status', (msg) => {
+		this.socket = socketIOClient(endpoint);
+		this.socket.on('error_status', (msg) => {
+			console.log('error status has been updated: ' + msg);
 			this.setState({message_status : msg});
 		});
 	}
@@ -24,12 +25,12 @@ class HomePage extends React.Component {
 		const moveStr = '(' + x + ',' + y + ')';
 		console.log('in form submit for move, movestr=' + moveStr);
 		const { endpoint } = this.state;
-		const socket = socketIOClient(endpoint);
-		socket.emit('client_move_request', moveStr);
+		this.socket.emit('client_move_request', moveStr);
 	}
 
 	render() {
 		const {message_status} = this.state;
+		const {current_position} = this.state;
 		return (
 			<div className="home">
 				<div className="leftPane">
@@ -42,6 +43,7 @@ class HomePage extends React.Component {
 				</div>
 				<div className="rightPane">
 					<div className="savedPositions">
+						<h3>Your current position: {current_position}</h3>
 						<h3>Your Saved Positions</h3>
 						<ul className="positionList">
 							<li className="positionListItem">
