@@ -5,6 +5,9 @@ const custom_utils = require('./utils.js');
 const consts = require('./consts.js');
 const http = require('http');
 
+const db = require('./DBManager.js');
+const JobCommand = db.JobCommand;
+
 const app = express();
 
 // Allow web client to access API on same server (need to do this BEFORE mounting router)
@@ -83,9 +86,4 @@ io.on(consts.main_socket_connection_route, function(socket){
 
 server.listen(port, () => {
   console.log(`Server listening on port ${port}!`);
-
-  // var soonestMove = JobCommand.min('time').then(min => {});
-  // var timeTillMove = soonestMove - Date.now();
-  // setTimeout(JobCommand.callMove(), timeTillMove);
-
 });
