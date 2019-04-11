@@ -39,8 +39,13 @@ router.post('/create', function (req, res) {
           });
         });
 
-        // TODO: create job commands here
+        // Creating job commands here
         createJobCommands(newJob.jobId);
+
+        // Setting timer for soonest job here
+        var soonestMove = JobCommand.min('time').then(min => {});
+        var timeTillMove = soonestMove - Date.now();
+        setTimeout(function() { JobCommand.callMove(); }, timeTillMove);
 
         res.send(newJob);
       }).catch((err) => {
