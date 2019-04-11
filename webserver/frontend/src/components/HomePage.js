@@ -13,13 +13,17 @@ class HomePage extends React.Component {
 		this.socket = socketIOClient(endpoint);
 		this.socket.on('error_status', (msg) => {
 			console.log('error status has been updated: ' + msg);
-			this.setState({message_status : msg});
+			const statusArr = msg.split(':');
+			const msgStatus = statusArr[0];
+			if (msgStatus === 'ok') {
+				this.setState({current_position : statusArr[1]});
+			}
+			this.setState({message_status : msgStatus});
 		});
 	}
 
 	handleSendMoveCommand = (e) => {
 		e.preventDefault();
-		alert('working');
 		const x = e.target.x_move.value;
 		const y = e.target.y_move.value;
 		const moveStr = '(' + x + ',' + y + ')';

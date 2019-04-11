@@ -35,7 +35,7 @@ moveStrToTuple = function(pointStr) {
     pointStr = pointStr.trim();
     pointStr = pointStr.substring(1, pointStr.length - 1);
     pointArr = pointStr.split(',');
-    return (parseInt(pointArr[0], parseInt(pointArr[1])));
+    return [parseInt(pointArr[0]), parseInt(pointArr[1])];
 }
 
 emit_move_command = function(io, app, msg) {
