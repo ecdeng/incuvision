@@ -69,6 +69,7 @@ input[name="frequency"] {
 }
 
 .createExperimentBtn {
+	cursor: pointer;
 	margin-top: 30px;
 	border-radius: 15px;
 	padding: 20px;

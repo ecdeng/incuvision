@@ -59,6 +59,17 @@ class NewExperimentPage extends React.Component {
 
 	/* Unforunately requires some nested async calls -- I think this is the best way to do it, but not sure */
 	createNewExperiment = (e) => {
+		//validate the form
+		if (this.state.name.length < 1) {
+
+		}
+		if (this.state.description.length < 1) {
+			
+		}
+		if (this.state.frequency < 1) {
+			
+		}
+
 		axios.post("http://localhost:5000/experiments/create",
 			{
 				name: this.state.name,
@@ -66,6 +77,8 @@ class NewExperimentPage extends React.Component {
 			})
 			.then((res) => {
 				let experiment = res.data;
+				console.log(experiment);
+				
 				axios.post("http://localhost:5000/jobs/create",
 					{
 						name: experiment.name + "_Job",
