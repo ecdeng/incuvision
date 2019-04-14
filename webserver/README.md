@@ -1,11 +1,13 @@
 # Node Server Installation Instructions
 
-1. Install the LTS version of Node (from https://nodejs.org/en/download/)
+1. Install Node version **10.15.0** (from https://nodejs.org/en/download/)
 2. Install the server's dependencies by running `npm install`
   - This will also install [nodemon](https://nodemon.io), a really useful utility when we're developing on a Node server.
-3. Run the server with the command `npm start`
-  - This script runs `node ./src/server.js`.
-	- For a dev-friendly script, run `npm run-script dev` and you'll get the same result running on nodemon.
+3. Run the server with the command `npm run server`
+  - This script runs `nodemon ./src/server.js` on port 5000.
+4. Run the frontend with `npm run frontend`
+	- This starts the React app on port 3000.
+
 
 # MySQL Installation Instructions
 ### If you've already got a MySQL setup you like, all you need to do is modify the very top of DBManager.js. Otherwise, follow the instructions below!
@@ -19,7 +21,7 @@
 # Deployment Instructions
 
 We use Heroku's git CLI for deployment, so all you need to deploy the webserver to **incuvision-webserver.herokuapp.com** is the following:
-1. Navigate to the `webserver/` directory -- this is important!
+1. **First**, navigate to the `webserver/` directory -- this is important!
 2. `git add .`
 3. `git commit -m <deployment commit message>`
 4. `git push heroku master`

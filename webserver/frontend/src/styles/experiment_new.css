@@ -94,3 +94,13 @@ input[name="frequency"] {
 }
 
 .createExperimentBtn:focus { outline: none; }
+
+.invalid-response {
+	color: red;
+	margin-top: 20px;
+}
+
+.complete-response {
+	color: green;
+	margin-top: 20px;
+}

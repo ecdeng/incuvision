@@ -29,7 +29,9 @@ class NewExperimentPage extends React.Component {
 				{ name: "", xPos: 0, yPos: 0 },
 				{ name: "", xPos: 0, yPos: 0 },
 				{ name: "", xPos: 0, yPos: 0 }
-			]
+			],
+			isValid: true,
+			isComplete: false
 		}
 	}
 
@@ -60,60 +62,59 @@ class NewExperimentPage extends React.Component {
 	/* Unforunately requires some nested async calls -- I think this is the best way to do it, but not sure */
 	createNewExperiment = (e) => {
 		//validate the form
-		if (this.state.name.length < 1) {
+		const { name, description, frequency } = this.state;
+		if (name.length < 1 || description.length < 1 || frequency < 1) {
+			this.setState({ isValid: false });
+		}
+		//form valid, submit!
+		else {
+			this.setState({ isValid: true });
+			axios.post("http://localhost:5000/experiments/create",
+				{
+					name: this.state.name,
+					description: this.state.description
+				})
+				.then((res) => {
+					this.setState({ isComplete: true });
+					let experiment = res.data;
+					console.log(experiment);
 
-		}
-		if (this.state.description.length < 1) {
-			
-		}
-		if (this.state.frequency < 1) {
-			
-		}
-
-		axios.post("http://localhost:5000/experiments/create",
-			{
-				name: this.state.name,
-				description: this.state.description
-			})
-			.then((res) => {
-				let experiment = res.data;
-				console.log(experiment);
-				
-				axios.post("http://localhost:5000/jobs/create",
-					{
-						name: experiment.name + "_Job",
-						frequency: this.state.frequency,
-						startDate: this.state.startDate,
-						endDate: this.state.endDate,
-						experimentId: experiment.experimentId
-					})
-					.then((res) => {
-						let job = res.data;
-						this.state.positions.forEach((pos) => {
-							axios.post("http://localhost:5000/positions/create",
-								{
-									name: pos.name,
-									xPos: pos.xPos,
-									yPos: pos.yPos,
-									zPos: 1,
-									experimentId: experiment.experimentId,
-									jobId: job.jobId
-								})
-								.then((newPos) => {
-									console.log("Successfully created position " + newPos);
-								})
-								.catch((err) => {
-									console.log("Could not create position: " + err);
-								});
+					axios.post("http://localhost:5000/jobs/create",
+						{
+							name: experiment.name + "_Job",
+							frequency: this.state.frequency,
+							startDate: this.state.startDate,
+							endDate: this.state.endDate,
+							experimentId: experiment.experimentId
+						})
+						.then((res) => {
+							let job = res.data;
+							this.state.positions.forEach((pos) => {
+								axios.post("http://localhost:5000/positions/create",
+									{
+										name: pos.name,
+										xPos: pos.xPos,
+										yPos: pos.yPos,
+										zPos: 1,
+										experimentId: experiment.experimentId,
+										jobId: job.jobId
+									})
+									.then((newPos) => {
+										console.log("Successfully created position " + newPos);
+									})
+									.catch((err) => {
+										console.log("Could not create position: " + err);
+									});
+							});
+						})
+						.catch((err) => {
+							console.log("Could not create job: " + err);
 						});
-					})
-					.catch((err) => {
-						console.log("Could not create job: " + err);
-					});
-			})
-			.catch((err) => {
-				console.log("Could not create experiment: " + err);
-			});
+				})
+				.catch((err) => {
+					console.log("Could not create experiment: " + err);
+				});
+		}
 	}
 
 	render() {
@@ -180,8 +181,14 @@ class NewExperimentPage extends React.Component {
 						</select>
 					</div>
 				</div>
-
+				{!this.state.isValid &&
+					<div className="invalid-response"> Could not submit form! Make sure you've filled out every field. </div>
+				}
+				{this.state.isComplete &&
+					<div className="complete-response"> Experiment "{this.state.name}" created! </div>
+				}
 				<button className="createExperimentBtn" onClick={this.createNewExperiment} >Create Experiment</button>
+
 			</div>
 		);
 	}

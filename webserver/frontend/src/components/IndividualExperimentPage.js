@@ -34,9 +34,7 @@ class IndividualExperimentPage extends React.Component {
 	}
 
 	render() {
-		const experiment = this.state.experiment;
-		const images = this.state.images;
-		const positions = this.state.positions;
+		const { experiment, images, positions } = this.state;
 
 		return (
 			<div className="experimentArea">
@@ -66,7 +64,7 @@ class IndividualExperimentPage extends React.Component {
 						<ul className="imageList">
 							{images.map((image) => (
 								<li className="imageListItem">
-									<img src={image.filepath} alt={image.name}/>
+									<img src={image.filepath} alt={image.name} />
 									<div className="textArea">
 										<p>{image.name}</p>
 										<p>{image.timestamp}</p>
