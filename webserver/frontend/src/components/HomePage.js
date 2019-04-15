@@ -1,6 +1,7 @@
 import React from 'react';
 import '../styles/home.css';
 import socketIOClient from 'socket.io-client';
+import axios from axios
 
 class HomePage extends React.Component {
 	constructor() {
@@ -27,6 +28,124 @@ class HomePage extends React.Component {
 		const { endpoint } = this.state;
 		this.socket.emit('client_move_request', moveStr);
 	}
+
+	createVideoStream() {
+
+		configureLogging();
+		var streamName = "IncuvisionVideoStream";
+		// Step 1: Configure SDK Clients
+		var options = {
+			accessKeyId: "access key please",
+			secretAccessKey: "secret key please",
+			sessionToken: undefined,
+			region: "us-west-2",
+			endpoint: undefined
+		}
+		var kinesisVideo = new AWS.KinesisVideo(options);
+		var kinesisVideoArchivedContent = new AWS.KinesisVideoArchivedMedia(options);
+		var kinesisVideoMedia = new AWS.KinesisVideoMedia(options);
+		// Step 2: Get a data endpoint for the stream
+		console.log('Fetching data endpoint');
+		kinesisVideo.getDataEndpoint({
+			StreamName: streamName,
+			APIName: "GET_HLS_STREAMING_SESSION_URL"
+		}, function(err, response) {
+			if (err) { return console.error(err); }
+			console.log('Data endpoint: ' + response.DataEndpoint);
+			kinesisVideoArchivedContent.endpoint = new AWS.Endpoint(response.DataEndpoint);
+			// Step 3: Get an HLS Streaming Session URL
+			console.log('Fetching HLS Streaming Session URL');
+			kinesisVideoArchivedContent.getHLSStreamingSessionURL({
+				StreamName: streamName,
+				PlaybackMode: "LIVE",
+				HLSFragmentSelector: {
+					FragmentSelectorType: "SERVER_TIMESTAMP",
+					TimestampRange: undefined,
+					ContainerFormat: "FRAGMENTED_MP4",
+					DiscontinuityMode: "ALWAYS",
+					DisplayFragmentTimestamp: "ALWAYS",
+					MaxMediaPlaylistFragmentResults: undefined,
+					Expires: undefined
+				}, function(err, response) {
+					if (err) { return console.error(err); }
+					console.log('HLS Streaming Session URL: ' + response.HLSStreamingSessionURL);
+					// Step 4: Give the URL to the video player.
+					var playerElement = $('#videojs');
+					playerElement.show();
+					var player = videojs('videojs');
+					console.log('Created VideoJS Player');
+					player.src({
+						src: response.HLSStreamingSessionURL,
+						type: 'application/x-mpegURL'
+					});
+					console.log('Set player source');
+					player.play();
+					console.log('Starting playback');
+				}});
+			});
+		$('.player').hide();
+	}
+
+	function captureImage(experimentId) {
+		//capture a snapshot from the video js player: https://stackoverflow.com/questions/13760805/how-to-take-a-snapshot-of-html5-javascript-based-video-player
+		var canvas = document.createElement('canvas');
+		canvas.width = 640;
+		canvas.height = 480;
+		var ctx = canvas.getContext('2d');
+		//draw image to canvas. scale to target dimensions
+		var player = $('#videojs');
+		context.drawImage(player.children_[0], 0, 0, canvas.width, canvas.height);
+		//convert to desired file format
+		var dataURI = canvas.toDataURL('image/jpeg'); 
+		//upload to s3, taken from https://stackoverflow.com/questions/13979558/saving-an-image-stored-on-s3-using-node-js
+		var AWS = require('aws-sdk');
+		AWS.config.loadFromPath('./s3_config.json');
+		var s3Bucket = new AWS.S3( { params: {Bucket: 'incuvision'} } );
+		var d = new Date().getTime();
+     	var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        	var r = (d + Math.random()*16)%16 | 0;
+        	d = Math.floor(d/16);
+        	return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+     	});
+		buf = new Buffer(dataURI.body.imageBinary.replace(/^data:image\/\w+;base64,/, ""),'base64')
+ 			var data = {
+   			Key: uuid, 
+   			Body: buf,
+   			ContentEncoding: 'base64',
+   			ContentType: 'image/jpeg'
+		};
+		s3Bucket.putObject(data, function(err, data){
+      		if (err) { 
+       			console.log(err);
+        		console.log('Error uploading data: ', data); 
+      		} else {
+        		console.log('succesfully uploaded the image!');
+      		}
+  		});
+  		var urlParams = {Bucket: 'incuvision', Key: uuid};
+  		s3.getSignedUrl('getObject', urlParams, function(err, url)) {
+  			axios.post("http://localhost:5000/images/create/", {
+  				name: (experimentId) ? "Experiment" + experimentId + "_" + d + ".jpeg" : "ManualCapture_" + d + ".jpeg",
+  				timestamp: d,
+  				filepath: url
+  			})
+  		}
+	}
+	/**
+	function retrieveAllImage() {
+		//http://www.joshsgman.com/upload-to-and-get-images-from-amazon-s3-with-node-js/
+		var params = {Bucket: 'incuvision'};
+		s3.listObjects(params, function(err, data){
+  			var bucketContents = data.Contents;
+    		for (var i = 0; i < bucketContents.length; i++){
+      			var urlParams = {Bucket: 'incuvision', Key: bucketContents[i].Key};
+        		s3.getSignedUrl('getObject', urlParams, function(err, url){
+          			
+        		});
+    		}
+		});
+	}
+	**/
 
 	render() {
 		const {message_status} = this.state;
