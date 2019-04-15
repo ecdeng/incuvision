@@ -8,6 +8,7 @@
     "npm": "6.9.0"
   },
   "dependencies": {
+    "aws-sdk": "^2.437.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "express-jwt": "^5.3.1",

@@ -1,4 +1,5 @@
 const isValidPointStr = require('../src/utils.js').isValidPointStr;
+const moveStrToTuple = require('../src/utils.js').moveStrToTuple;
 
 test('tests if the string "(10, 10)" is a point', () => {
     expect(isValidPointStr('(10, 10)')).toBe(true);
@@ -38,4 +39,20 @@ test('tests if the string "(1.1, 1.1)" is a point', () => {
 
 test('tests if the string "d10, 3f" is not a point', () => {
     expect(isValidPointStr('d10, 3f')).toBe(false);
+});
+
+test('tests that the move (1, 2) is converted to the correct tuple', () => {
+    expect(moveStrToTuple('(1, 2)')).toBe((1, 2));
+});
+
+test('tests that the move (-3, 5) is converted to the correct tuple', () => {
+    expect(moveStrToTuple('(-3, 5)')).toBe((-3, 5));
+});
+
+test('tests that the move (3,2) is converted to the correct tuple', () => {
+    expect(moveStrToTuple('(3,2)')).toBe((3, 2));
+});
+
+test('tests that the move    (3, 2) is converted to the correct tuple (including whitespace)', () => {
+    expect(moveStrToTuple('  (3, 2)')).toBe((3, 2));
 });

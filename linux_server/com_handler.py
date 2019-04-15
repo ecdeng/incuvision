@@ -1,4 +1,5 @@
 import socketio
+import time
 import com_handler_constants as const
 from motor_controller import MotorController
 
@@ -39,6 +40,8 @@ class ComHandler:
 
             # send the move to the arduino
             if not con_arduino:
+                print('arduino move received: ', moves)
+                time.sleep(2)
                 print('con_arduino move simulated: ', moves)
                 self.curr_point = new_point
                 self.sio.emit(const.ARDUINO_MOVE_RESPONSE_ROUTE, const.ARDUINO_GOOD_RESP)
