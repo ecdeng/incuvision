@@ -22,14 +22,21 @@ class HomePage extends React.Component {
 		});
 	}
 
-	handleSendMoveCommand = (e) => {
+	handleSendMoveCommand(e, isRelative) {
 		e.preventDefault();
 		const x = e.target.x_move.value;
 		const y = e.target.y_move.value;
 		const moveStr = '(' + x + ',' + y + ')';
 		console.log('in form submit for move, movestr=' + moveStr);
-		const { endpoint } = this.state;
-		this.socket.emit('client_move_request', moveStr);
+		this.socket.emit(isRelative ? 'client_move_request_relative' : 'client_move_request_abs', moveStr);
+	}
+
+	handleSendMoveCommandRel = (e) => {
+		this.handleSendMoveCommand(e, true);
+	}
+
+	handleSendMoveCommandAbs = (e) => {
+		this.handleSendMoveCommand(e, false);
 	}
 
 	render() {
@@ -73,7 +80,8 @@ class HomePage extends React.Component {
 						<p>{message_status}</p>
 						<div className="positionArea">
 							<div className="positionInputArea">
-								<form className="absoluteChange changeForm" onSubmit={this.handleSendMoveCommand}> <span>Absolute Position</span>
+								<form className="absoluteChange changeForm" onSubmit={this.handleSendMoveCommandAbs}> 
+									<span>Absolute Position</span>
 									<div className="formgroup">
 										<label>x:</label>
 										<input name="x_move" type="text" />
@@ -84,14 +92,15 @@ class HomePage extends React.Component {
 									</div>
 									<input type="submit" value="Move" />
 								</form>
-								<form className="relativeChange changeForm" action=""> <span>Relative Position</span>
+								<form className="relativeChange changeForm" onSubmit={this.handleSendMoveCommandRel}> 
+									<span>Relative Position</span>
 									<div className="formgroup">
 										<label>+ x:</label>
-										<input type="text" />
+										<input name="x_move" type="text" />
 									</div>
 									<div className="formgroup">
 										<label>+ y:</label>
-										<input type="text" />
+										<input name="y_move" type="text" />
 									</div>
 									<input type="submit" value="Move" />
 								</form>

@@ -42,17 +42,17 @@ test('tests if the string "d10, 3f" is not a point', () => {
 });
 
 test('tests that the move (1, 2) is converted to the correct tuple', () => {
-    expect(moveStrToTuple('(1, 2)')).toBe((1, 2));
+    expect(moveStrToTuple('(1, 2)')).toEqual([1, 2]);
 });
 
 test('tests that the move (-3, 5) is converted to the correct tuple', () => {
-    expect(moveStrToTuple('(-3, 5)')).toBe((-3, 5));
+    expect(moveStrToTuple('(-3, 5)')).toEqual([-3, 5]);
 });
 
 test('tests that the move (3,2) is converted to the correct tuple', () => {
-    expect(moveStrToTuple('(3,2)')).toBe((3, 2));
+    expect(moveStrToTuple('(3,2)')).toEqual([3, 2]);
 });
 
 test('tests that the move    (3, 2) is converted to the correct tuple (including whitespace)', () => {
-    expect(moveStrToTuple('  (3, 2)')).toBe((3, 2));
+    expect(moveStrToTuple('  (3, 2)')).toEqual([3, 2]);
 });
