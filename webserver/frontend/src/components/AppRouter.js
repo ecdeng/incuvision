@@ -4,7 +4,7 @@ import HomePage from './HomePage';
 import ExperimentsPage from './ExperimentsPage';
 import IndividualExperimentPage from './IndividualExperimentPage';
 import NewExperimentPage from './NewExperimentPage';
-import { BrowserRouter as Router, Redirect, Route, NavLink } from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Route, NavLink, Switch } from "react-router-dom";
 import PrivateRoute from './PrivateRoute';
 import LoginPage from "./LoginPage";
 
@@ -50,13 +50,17 @@ class AppRouter extends React.Component {
 								to="/new-experiment/"><li> New Experiment </li></NavLink>
 						</ul>
 					</nav>
-					<Route exact path="/login" component={LoginPage} />
+					<Switch>
+						<Route exact path="/login" component={LoginPage} />
 
-					<PrivateRoute redirect="/login" authMethod={authenticate} exact path="/" component={Home} />
-					<PrivateRoute redirect="/login" authMethod={authenticate} exact path="/experiments/" component={Experiments} />
-					<PrivateRoute redirect="/login" authMethod={authenticate} exact path="/new-experiment/" component={NewExperiment} />
-					<PrivateRoute redirect="/login" authMethod={authenticate} exact path="/experiments/:experimentId" component={IndivudalExperiment} />
-					<PrivateRoute redirect="/login" authMethod={authenticate} exact path="/logout" component={Logout} />
+						<PrivateRoute redirect="/login" authMethod={authenticate} exact path="/" component={Home} />
+						<PrivateRoute redirect="/login" authMethod={authenticate} exact path="/experiments/" component={Experiments} />
+						<PrivateRoute redirect="/login" authMethod={authenticate} exact path="/new-experiment/" component={NewExperiment} />
+						<PrivateRoute redirect="/login" authMethod={authenticate} exact path="/experiments/:experimentId" component={IndivudalExperiment} />
+						<PrivateRoute redirect="/login" authMethod={authenticate} exact path="/logout" component={Logout} />
+
+						<Route path="/" render={(props) => <h2 className="fourohfour">Uh oh! This page could not be found!</h2>} />
+					</Switch>
 				</div>
 			</Router>
 		);
@@ -64,7 +68,7 @@ class AppRouter extends React.Component {
 }
 
 class Logout extends React.Component {
-	render() { 
+	render() {
 		localStorage.removeItem("authenticated");
 		return (
 			<Redirect to="/login" />
