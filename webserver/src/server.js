@@ -21,20 +21,21 @@ app.set('view engine', 'pug');
 // Express app setup
 app.use(express.static(path.join(__dirname, '../frontend/build')));
 const routes = require('./routes/routes');
-app.use('/', routes);
+app.use('/api', routes);
 
 // Production mode
 if (process.env.NODE_ENV === 'production') {
+	console.log("NODE_ENV set to production -- serving React app from express.static");
 	app.use(express.static(path.join(__dirname, '../frontend/build')));
-	app.get('/', (req, res) => {
+	app.get('*', (req, res) => {
 		res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
-	})
+	});
 }
 
-//Dev mode
-app.get('/app', (req, res) => {
-	res.sendFile(path.join(__dirname, '../frontend/public/index.html'));
-})
+// Serve React app to all browser requests 
+app.get('*', (req, res) => {
+	res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
+});
 
 // 404 Route -- Always mounted LAST!
 // See middleware.js for explanation of why we .use() this here, not in routes.js

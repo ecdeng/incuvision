@@ -22,7 +22,7 @@ class LoginPage extends React.Component {
 
 	handleLogin = (e) => {
 		e.preventDefault();
-		axios.post("http://localhost:5000/login", { username: this.state.username, password: this.state.password })
+		axios.post("/api/login", { username: this.state.username, password: this.state.password })
 			.then((res) => {
 				console.log(res.data);
 				if (res.data.authenticated === "true") {
@@ -50,7 +50,7 @@ class LoginPage extends React.Component {
 								</div>
 								<div className="row">
 									<label>password: </label>
-									<input type="text" name="password" onChange={this.handlePasswordChange} tabIndex="2" />
+									<input type="password" name="password" onChange={this.handlePasswordChange} tabIndex="2" />
 								</div>
 								<input type="submit" value="Log In" />
 							</form>

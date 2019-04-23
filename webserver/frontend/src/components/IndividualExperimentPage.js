@@ -15,18 +15,18 @@ class IndividualExperimentPage extends React.Component {
 	}
 
 	componentDidMount() {
-		axios.get("http://localhost:5000/experiments/getById?experimentId=" + this.props.experimentId)
+		axios.get("/api/experiments/getById?experimentId=" + this.props.experimentId)
 			.then(res => {
 				this.setState({ experiment: res.data });
 				console.log(res.data);
 
 			});
-		axios.get("http://localhost:5000/positions/getByExperiment?experimentId=" + this.props.experimentId)
+		axios.get("/api/positions/getByExperiment?experimentId=" + this.props.experimentId)
 			.then(res => {
 				this.setState({ positions: res.data });
 				console.log(res.data);
 			});
-		axios.get("http://localhost:5000/images/getByExperiment?experimentId=" + this.props.experimentId)
+		axios.get("/api/images/getByExperiment?experimentId=" + this.props.experimentId)
 			.then(res => {
 				this.setState({ images: res.data });
 				console.log(res.data);
