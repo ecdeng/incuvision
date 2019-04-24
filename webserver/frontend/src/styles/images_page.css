@@ -1,0 +1,18 @@
+.imagesPage {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.imagesPage h2, .imagesPage h4 {
+	color: black;
+}
+
+.imagesPage h2 { margin-top: 20px; }
+.imagesPage h4 { margin-bottom: 20px; }
+
+.imagesPage input[name="filter"] {
+	padding: 5px;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+}
