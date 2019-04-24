@@ -1,7 +1,8 @@
 import React from 'react';
 import '../styles/home.css';
 import socketIOClient from 'socket.io-client';
-import axios from axios
+import videojs from 'video.js'
+import axios from 'axios'
 
 class HomePage extends React.Component {
 	constructor() {
@@ -28,6 +29,13 @@ class HomePage extends React.Component {
 		});
 	}
 
+	// destroy player on unmount
+  	componentWillUnmount() {
+    	if (this.player) {
+      		this.player.dispose()
+    	}
+  	}
+
 	handleSendMoveCommand(e, isRelative) {
 		e.preventDefault();
 		const x = e.target.x_move.value;
@@ -47,15 +55,13 @@ class HomePage extends React.Component {
 
 	createVideoStream() {
 
-		configureLogging();
-		var streamName = "IncuvisionVideoStream";
+		var AWS = require('aws-sdk');
+		var streamName = "Incuvision";
 		// Step 1: Configure SDK Clients
 		var options = {
-			accessKeyId: "access key please",
-			secretAccessKey: "secret key please",
-			sessionToken: undefined,
-			region: "us-west-2",
-			endpoint: undefined
+			accessKeyId: "AKIAJHVRF5Q3V2J4NK7Q",
+			secretAccessKey: "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",
+			region: "us-west-2"
 		}
 		var kinesisVideo = new AWS.KinesisVideo(options);
 		var kinesisVideoArchivedContent = new AWS.KinesisVideoArchivedMedia(options);
@@ -73,49 +79,95 @@ class HomePage extends React.Component {
 			console.log('Fetching HLS Streaming Session URL');
 			kinesisVideoArchivedContent.getHLSStreamingSessionURL({
 				StreamName: streamName,
-				PlaybackMode: "LIVE",
+				PlaybackMode: 'LIVE',
 				HLSFragmentSelector: {
-					FragmentSelectorType: "SERVER_TIMESTAMP",
-					TimestampRange: undefined,
-					ContainerFormat: "FRAGMENTED_MP4",
-					DiscontinuityMode: "ALWAYS",
-					DisplayFragmentTimestamp: "ALWAYS",
-					MaxMediaPlaylistFragmentResults: undefined,
-					Expires: undefined
-				}, function(err, response) {
-					if (err) { return console.error(err); }
+					FragmentSelectorType: 'SERVER_TIMESTAMP',
+					TimestampRange: undefined
+					//ContainerFormat: "FRAGMENTED_MP4",
+					//DiscontinuityMode: "ALWAYS",
+					//DisplayFragmentTimestamp: "ALWAYS",
+					//MaxMediaPlaylistFragmentResults: undefined,
+					//Expires: undefined
+					},
+					Expires: 300
+			}, function(err, response) {
+					if (err) { 
+						console.log("error retrieving HLSStreamingSessionURL");
+						console.log(err, err.stack); // an error occurred
+						var playerElement = document.getElementById("videojs");
+						const videoJsOptions = {
+  						autoplay: true,
+  						controls: true,
+  						sources: [{
+    						src: "//vjs.zencdn.net/v/oceans.mp4",
+    						type: "video/mp4"
+    						//src: response.HLSStreamingSessionURL,
+    						//type: 'application/x-mpegURL'
+  						}]
+					}
+    				this.player = videojs(playerElement, videoJsOptions, function onPlayerReady() {
+      					console.log('onPlayerReady', this)
+    				});
+					console.log('Set player source');
+					this.player.play();
+					console.log('Starting playback of oceans');
+						return console.error(err); 
+					}
 					console.log('HLS Streaming Session URL: ' + response.HLSStreamingSessionURL);
 					// Step 4: Give the URL to the video player.
-					var playerElement = $('#videojs');
-					playerElement.show();
-					var player = videojs('videojs');
-					console.log('Created VideoJS Player');
-					player.src({
-						src: response.HLSStreamingSessionURL,
-						type: 'application/x-mpegURL'
-					});
+					var playerElement = document.getElementById("videojs");
+					const videoJsOptions = {
+  						autoplay: true,
+  						controls: true,
+  						sources: [{
+    						//src: "//vjs.zencdn.net/v/oceans.mp4",
+    						//type: "video/mp4"
+    						src: response.HLSStreamingSessionURL,
+    						type: 'application/x-mpegURL'
+  						}]
+					}
+    				this.player = videojs(playerElement, videoJsOptions, function onPlayerReady() {
+      					console.log('onPlayerReady', this)
+    				});
 					console.log('Set player source');
-					player.play();
+					this.player.play();
 					console.log('Starting playback');
-				}});
-			});
-		$('.player').hide();
+				});
+				console.log("finished fetching streaming session");
+			});		
+		//document.getElementById('.player').hide();
 	}
 
-	function captureImage(experimentId) {
+	takePhoto = (e) => {
+		console.log("Trying to take a photo");
+		this.captureImage(1);
+		console.log("Took photo!");
+	}
+
+	captureImage(experimentId) {
 		//capture a snapshot from the video js player: https://stackoverflow.com/questions/13760805/how-to-take-a-snapshot-of-html5-javascript-based-video-player
+		var video=document.querySelector('#videojs video');
+		console.log("creating canvas");
 		var canvas = document.createElement('canvas');
 		canvas.width = 640;
 		canvas.height = 480;
-		var ctx = canvas.getContext('2d');
 		//draw image to canvas. scale to target dimensions
-		var player = $('#videojs');
-		context.drawImage(player.children_[0], 0, 0, canvas.width, canvas.height);
+		console.log("draw image");
+		var ctx = canvas.getContext('2d')
+		ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 		//convert to desired file format
-		var dataURI = canvas.toDataURL('image/jpeg'); 
+		var dataURL = canvas.toDataURL('image/jpeg');
+		var image = dataURL.replace(/^data:image\/\w+;base64,/, "");
+		console.log("DataURI: " + dataURL);
 		//upload to s3, taken from https://stackoverflow.com/questions/13979558/saving-an-image-stored-on-s3-using-node-js
+		console.log("Start uploading to s3");
 		var AWS = require('aws-sdk');
-		AWS.config.loadFromPath('./s3_config.json');
+		var config = new AWS.Config({
+			accessKeyId: "AKIAJHVRF5Q3V2J4NK7Q",
+			secretAccessKey: "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",
+			region: "us-west-2"
+		});
+		AWS.config = config;
 		var s3Bucket = new AWS.S3( { params: {Bucket: 'incuvision'} } );
 		var d = new Date().getTime();
      	var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -123,45 +175,36 @@ class HomePage extends React.Component {
         	d = Math.floor(d/16);
         	return (c=='x' ? r : (r&0x3|0x8)).toString(16);
      	});
-		buf = new Buffer(dataURI.body.imageBinary.replace(/^data:image\/\w+;base64,/, ""),'base64')
- 			var data = {
+		var buf = new Buffer(image,'base64')
+ 		var data = {
    			Key: uuid, 
    			Body: buf,
    			ContentEncoding: 'base64',
    			ContentType: 'image/jpeg'
 		};
+		console.log("Store into s3");
 		s3Bucket.putObject(data, function(err, data){
       		if (err) { 
        			console.log(err);
-        		console.log('Error uploading data: ', data); 
+        		console.log('Error uploading photo to s3'); 
       		} else {
         		console.log('succesfully uploaded the image!');
       		}
   		});
   		var urlParams = {Bucket: 'incuvision', Key: uuid};
-  		s3.getSignedUrl('getObject', urlParams, function(err, url)) {
+  		var s3 = new AWS.S3();
+  		console.log("Get presigned URL");
+  		s3.getSignedUrl('getObject', urlParams, function(err, url) {
+  			console.log("Signed url is: " + url);
+  			/**
   			axios.post("http://localhost:5000/images/create/", {
   				name: (experimentId) ? "Experiment" + experimentId + "_" + d + ".jpeg" : "ManualCapture_" + d + ".jpeg",
   				timestamp: d,
   				filepath: url
   			})
-  		}
+  			**/
+  		});
 	}
-	/**
-	function retrieveAllImage() {
-		//http://www.joshsgman.com/upload-to-and-get-images-from-amazon-s3-with-node-js/
-		var params = {Bucket: 'incuvision'};
-		s3.listObjects(params, function(err, data){
-  			var bucketContents = data.Contents;
-    		for (var i = 0; i < bucketContents.length; i++){
-      			var urlParams = {Bucket: 'incuvision', Key: bucketContents[i].Key};
-        		s3.getSignedUrl('getObject', urlParams, function(err, url){
-          			
-        		});
-    		}
-		});
-	}
-	**/
 
 	render() {
 		const { message_status } = this.state;
@@ -171,10 +214,13 @@ class HomePage extends React.Component {
 				<div className="leftPane">
 					<div className="currentPos">Current position: <span className="posName">#3</span></div>
 					<div className="camera">
-						<video className="player video-js vjs-default-skin" id="videojs" controls="" autoPlay=""></video>
+						<video className="player video-js vjs-default-skin" id="videojs"></video>
 						<script src="https://vjs.zencdn.net/6.6.3/video.js"></script>
 						<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.14.1/videojs-contrib-hls.js"></script>
+						<link rel="stylesheet" href="//vjs.zencdn.net/5.12/video-js.css" />
+						{ this.createVideoStream() }
 					</div>
+					<button className="photoCapture" onClick={this.takePhoto} >Take Photo</button>
 				</div>
 				<div className="rightPane">
 					<div className="savedPositions">
