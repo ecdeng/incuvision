@@ -77,6 +77,8 @@ router.get('/login', (req, res) => {
 // User account authentication route (passport used as middleware)
 router.post('/login', (req, res) => {
 	passport.authenticate('local', function (err, user, info) {
+		console.log("got to this");
+		
 		if (err) { return res.send(err) }
 		if (!user) {
 			return res.send({authenticated: "false"});
@@ -89,14 +91,6 @@ router.post('/login', (req, res) => {
 				res.send(err);
 			}
 			return res.send({authenticated:"true"});
-			// If the user had another intended destination, go there
-			// if (req.session.previous) {
-			// 	let redirUrl = req.session.previous;
-			// 	req.session.previous = null;
-			// 	return res.redirect(redirUrl);
-			// }
-			// // Else, go home
-			// else return res.redirect('/');
 		});
 	})(req, res);
 });

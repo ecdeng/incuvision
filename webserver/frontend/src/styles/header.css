@@ -66,3 +66,22 @@
 .active {
 	background-color: #282C34;
 }
+
+.fourohfour {
+	margin-top: 50px;
+	color: black;
+}
+
+.logout {
+	background-color: #3D434F;
+	color: white;
+	padding: 5px;
+	margin-right: 15px;
+	font-size: 1.3em;
+	border: 1px solid #bbb;
+	border-radius: 2px;
+}
+
+.logout:hover {
+	color: #ccc;
+}

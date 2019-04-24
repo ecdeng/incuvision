@@ -6,7 +6,12 @@ import axios from axios
 class HomePage extends React.Component {
 	constructor() {
 		super();
-		this.state = {message_status : '', x_move : '', y_move : '', endpoint: 'http://127.0.0.1:5000', current_position : '(0, 0)'};
+		this.state = { 
+			message_status: '', 
+			x_move: '', 
+			y_move: '', 
+			endpoint: '/',
+			current_position: '(0, 0)' };
 	}
 
 	componentDidMount() {
@@ -17,20 +22,27 @@ class HomePage extends React.Component {
 			const statusArr = msg.split(':');
 			const msgStatus = statusArr[0];
 			if (msgStatus === 'ok') {
-				this.setState({current_position : statusArr[1]});
+				this.setState({ current_position: statusArr[1] });
 			}
-			this.setState({message_status : msgStatus});
+			this.setState({ message_status: msgStatus });
 		});
 	}
 
-	handleSendMoveCommand = (e) => {
+	handleSendMoveCommand(e, isRelative) {
 		e.preventDefault();
 		const x = e.target.x_move.value;
 		const y = e.target.y_move.value;
 		const moveStr = '(' + x + ',' + y + ')';
 		console.log('in form submit for move, movestr=' + moveStr);
-		const { endpoint } = this.state;
-		this.socket.emit('client_move_request', moveStr);
+		this.socket.emit(isRelative ? 'client_move_request_relative' : 'client_move_request_abs', moveStr);
+	}
+
+	handleSendMoveCommandRel = (e) => {
+		this.handleSendMoveCommand(e, true);
+	}
+
+	handleSendMoveCommandAbs = (e) => {
+		this.handleSendMoveCommand(e, false);
 	}
 
 	createVideoStream() {
@@ -152,10 +164,10 @@ class HomePage extends React.Component {
 	**/
 
 	render() {
-		const {message_status} = this.state;
-		const {current_position} = this.state;
+		const { message_status } = this.state;
+		const { current_position } = this.state;
 		return (
-			<div className="home">
+			<div className="homePage">
 				<div className="leftPane">
 					<div className="currentPos">Current position: <span className="posName">#3</span></div>
 					<div className="camera">
@@ -192,7 +204,8 @@ class HomePage extends React.Component {
 						<p>{message_status}</p>
 						<div className="positionArea">
 							<div className="positionInputArea">
-								<form className="absoluteChange changeForm" onSubmit={this.handleSendMoveCommand}> <span>Absolute Position</span>
+								<form className="absoluteChange changeForm" onSubmit={this.handleSendMoveCommandAbs}> 
+									<span>Absolute Position</span>
 									<div className="formgroup">
 										<label>x:</label>
 										<input name="x_move" type="text" />
@@ -203,19 +216,20 @@ class HomePage extends React.Component {
 									</div>
 									<input type="submit" value="Move" />
 								</form>
-								<form className="relativeChange changeForm" action=""> <span>Relative Position</span>
+								<form className="relativeChange changeForm" onSubmit={this.handleSendMoveCommandRel}> 
+									<span>Relative Position</span>
 									<div className="formgroup">
 										<label>+ x:</label>
-										<input type="text" />
+										<input name="x_move" type="text" />
 									</div>
 									<div className="formgroup">
 										<label>+ y:</label>
-										<input type="text" />
+										<input name="y_move" type="text" />
 									</div>
 									<input type="submit" value="Move" />
 								</form>
 							</div>
-							<div className="grid"><img src="img/grid.png" alt="grid.png" /></div>
+							{/* <div className="grid"><img src="img/grid.png" alt="grid.png" /></div> */}
 						</div>
 					</div>
 				</div>

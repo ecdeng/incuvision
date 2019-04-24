@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import '../styles/login.css';
 import axios from 'axios';
 
@@ -21,7 +22,7 @@ class LoginPage extends React.Component {
 
 	handleLogin = (e) => {
 		e.preventDefault();
-		axios.post("http://localhost:5000/login", { username: this.state.username, password: this.state.password })
+		axios.post("/api/login", { username: this.state.username, password: this.state.password })
 			.then((res) => {
 				console.log(res.data);
 				if (res.data.authenticated === "true") {
@@ -45,22 +46,23 @@ class LoginPage extends React.Component {
 							<form onSubmit={this.handleLogin} className="loginForm">
 								<div className="row">
 									<label>username: </label>
-									<input type="text" name="username" onChange={this.handleUsernameChange} tabIndex="1"/>
+									<input type="text" name="username" onChange={this.handleUsernameChange} tabIndex="1" />
 								</div>
 								<div className="row">
 									<label>password: </label>
-									<input type="text" name="password" onChange={this.handlePasswordChange} tabIndex="2"/>
+									<input type="password" name="password" onChange={this.handlePasswordChange} tabIndex="2" />
 								</div>
 								<input type="submit" value="Log In" />
 							</form>
 						</div>
 						<div className="background"></div>
 					</div>
-				}
+				}	
 				{isAuthenticated &&
-					<div className="loggedIn">
-						<h4>You are logged in! Click <a href="/">here</a> to go to the Incuvision home page!</h4>
-					</div>
+					<Redirect to="/" />
+					// <div className="loggedIn">
+					// 	<h4>You are logged in! Click <a href="/">here</a> to go to the Incuvision home page!</h4>
+					// </div>
 				}
 			</div>
 

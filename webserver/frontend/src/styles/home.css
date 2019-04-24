@@ -1,10 +1,11 @@
-.home {
+.homePage {
 	flex: 2;
 
 	display: flex;
 	align-items: stretch;
+	flex-wrap: wrap;
 }
-.home > div { flex: 1; }
+.homePage > div { flex: 1; }
 
 .leftPane {
 	background: black;

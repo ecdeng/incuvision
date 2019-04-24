@@ -69,7 +69,7 @@ class NewExperimentPage extends React.Component {
 		//form valid, submit!
 		else {
 			this.setState({ isValid: true });
-			axios.post("http://localhost:5000/experiments/create",
+			axios.post("/api/experiments/create",
 				{
 					name: this.state.name,
 					description: this.state.description
@@ -79,7 +79,7 @@ class NewExperimentPage extends React.Component {
 					let experiment = res.data;
 					console.log(experiment);
 
-					axios.post("http://localhost:5000/jobs/create",
+					axios.post("/api/jobs/create",
 						{
 							name: experiment.name + "_Job",
 							frequency: this.state.frequency,
@@ -90,7 +90,7 @@ class NewExperimentPage extends React.Component {
 						.then((res) => {
 							let job = res.data;
 							this.state.positions.forEach((pos) => {
-								axios.post("http://localhost:5000/positions/create",
+								axios.post("/api/positions/create",
 									{
 										name: pos.name,
 										xPos: pos.xPos,
