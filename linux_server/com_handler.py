@@ -30,13 +30,7 @@ class ComHandler:
                 self.sio.emit(const.ARDUINO_MOVE_RESPONSE_ROUTE, const.INVALID_POINT_ERROR)
                 return
             new_point = self.str_to_tuple(data)
-
-            # create the move
-            delta = (new_point[0] - self.curr_point[0], new_point[1] - self.curr_point[1])
-            if delta[0] > const.MOTOR_MAX_MOVE or delta[1] > const.MOTOR_MAX_MOVE:
-                self.sio.emit(const.ARDUINO_MOVE_RESPONSE_ROUTE, const.INVALID_MOVE_ERROR)
-                return
-            moves = self.convert_move_cmd(delta)
+            moves = self.convert_move_cmd(new_point)
 
             # send the move to the arduino
             if not con_arduino:
@@ -104,7 +98,7 @@ class ComHandler:
         return x_move_str, y_move_str
 
 def main():
-    ComHandler(False, True) # fake_arduino, real_server
+    ComHandler(True, True) # real_arduino, real_server
 
 if __name__ == '__main__':
     main()

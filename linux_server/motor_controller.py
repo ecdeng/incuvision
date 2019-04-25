@@ -1,4 +1,5 @@
 import serial
+import com_handler_constants as const
 from time import sleep
 
 class MotorController:
@@ -37,13 +38,13 @@ class MotorController:
         self.ser.close()
 
 def main():
-    motor_controller = MotorController('com3', 9600)
+    motor_controller = MotorController(const.COM_PORT, 9600)
     motor_controller.start()
     while True:
-        motor_controller.exec_cmd('xf1000000')
-        motor_controller.exec_cmd('xb1000000')
-        motor_controller.exec_cmd('yf1000000')
-        motor_controller.exec_cmd('yb1000000')
+        motor_controller.exec_cmd('xf20000')
+        motor_controller.exec_cmd('xb20000')
+        motor_controller.exec_cmd('yf20000')
+        motor_controller.exec_cmd('yb20000')
     motor_controller.stop()
 
     print('program terminated')
