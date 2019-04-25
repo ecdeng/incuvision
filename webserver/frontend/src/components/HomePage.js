@@ -3,7 +3,6 @@ import '../styles/home.css';
 import socketIOClient from 'socket.io-client';
 import shaka from 'shaka-player'
 import videojs from 'video.js'
-<<<<<<< HEAD
 import Hls from 'hls.js';
 import axios from 'axios'
 
@@ -162,63 +161,9 @@ class HomePage extends React.Component {
     					//console.log('stack trace: ' + data.err.stack);
 
   					});
-					**/
-  					
-                    
-					/**
-				},
-				Expires: 300
-			}, function (err, response) {
-				if (err) {
-					console.log("error retrieving HLSStreamingSessionURL");
-					console.log(err, err.stack); // an error occurred
-					let playerElement = document.getElementById("videojs");
-					const videoJsOptions = {
-						autoplay: true,
-						controls: true,
-						sources: [{
-							src: "//vjs.zencdn.net/v/oceans.mp4",
-							type: "video/mp4"
-							//src: response.HLSStreamingSessionURL,
-							//type: 'application/x-mpegURL'
-						}]
-					}
-    				this.player = videojs(playerElement, videoJsOptions, function onPlayerReady() {
-
-    				});
-    				**/
-					//console.log('Set player source');
-					//this.player.play();
-					//console.log('Starting playback');
-					this.player = videojs(playerElement, videoJsOptions, function onPlayerReady() {
-						console.log('onPlayerReady', this)
-					});
-					console.log('Set player source');
-					this.player.play();
-					console.log('Starting playback of oceans');
-					return console.error(err);
-				}
-				console.log('HLS Streaming Session URL: ' + response.HLSStreamingSessionURL);
-				// Step 4: Give the URL to the video player.
-				let playerElement = document.getElementById("videojs");
-				const videoJsOptions = {
-					autoplay: true,
-					controls: true,
-					sources: [{
-						//src: "//vjs.zencdn.net/v/oceans.mp4",
-						//type: "video/mp4"
-						src: response.HLSStreamingSessionURL,
-						type: 'application/x-mpegURL'
-					}]
-				}
-				this.player = videojs(playerElement, videoJsOptions, function onPlayerReady() {
-					console.log('onPlayerReady', this)
-				});
-				console.log('Set player source');
-				this.player.play();
-				console.log('Starting playback');
-			});
+  					**/
 			console.log("finished fetching streaming session");
+		});
 		});
 		//document.getElementById('.player').hide();
 	}
@@ -329,13 +274,12 @@ class HomePage extends React.Component {
 						<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.14.1/videojs-contrib-hls.js"></script>
 						<link rel="stylesheet" href="//vjs.zencdn.net/5.12/video-js.css" />
 						**/
-						{this.createVideoStream()}
 					</div>
 					<button className="photoCapture" onClick={this.takePhoto} >Take Photo</button>
 				</div>
 				<div className="rightPane">
 					<div className="savedPositions">
-						<h3>Current Camera Position: <br/>{current_position}</h3>
+						<h3>Your current position: {current_position}</h3>
 						{/* <h3>Your Saved Positions</h3>
 						<ul className="positionList">
 							<li className="positionListItem">
