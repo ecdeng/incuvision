@@ -223,7 +223,7 @@ class HomePage extends React.Component {
 				</div>
 				<div className="rightPane">
 					<div className="savedPositions">
-						<h3>Your current position: {current_position}</h3>
+						<h3>Current Camera Position: <br/>{current_position}</h3>
 						{/* <h3>Your Saved Positions</h3>
 						<ul className="positionList">
 							<li className="positionListItem">
