@@ -2,7 +2,6 @@ import React from 'react';
 import '../styles/home.css';
 import socketIOClient from 'socket.io-client';
 import videojs from 'video.js'
-import axios from 'axios'
 
 class HomePage extends React.Component {
 	constructor() {
@@ -65,7 +64,7 @@ class HomePage extends React.Component {
 		}
 		var kinesisVideo = new AWS.KinesisVideo(options);
 		var kinesisVideoArchivedContent = new AWS.KinesisVideoArchivedMedia(options);
-		var kinesisVideoMedia = new AWS.KinesisVideoMedia(options);
+		// var kinesisVideoMedia = new AWS.KinesisVideoMedia(options);
 		// Step 2: Get a data endpoint for the stream
 		console.log('Fetching data endpoint');
 		kinesisVideo.getDataEndpoint({
@@ -94,7 +93,7 @@ class HomePage extends React.Component {
 					if (err) { 
 						console.log("error retrieving HLSStreamingSessionURL");
 						console.log(err, err.stack); // an error occurred
-						var playerElement = document.getElementById("videojs");
+						let playerElement = document.getElementById("videojs");
 						const videoJsOptions = {
   						autoplay: true,
   						controls: true,
@@ -115,7 +114,7 @@ class HomePage extends React.Component {
 					}
 					console.log('HLS Streaming Session URL: ' + response.HLSStreamingSessionURL);
 					// Step 4: Give the URL to the video player.
-					var playerElement = document.getElementById("videojs");
+					let playerElement = document.getElementById("videojs");
 					const videoJsOptions = {
   						autoplay: true,
   						controls: true,
@@ -173,7 +172,7 @@ class HomePage extends React.Component {
      	var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
         	var r = (d + Math.random()*16)%16 | 0;
         	d = Math.floor(d/16);
-        	return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+        	return (c==='x' ? r : (r&0x3|0x8)).toString(16);
      	});
 		var buf = new Buffer(image,'base64')
  		var data = {
