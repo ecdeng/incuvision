@@ -19,6 +19,8 @@ FINISHED_WITH_NO_ERRORS_RESP = "Finished with no errors"
 
 # arduino interface constants
 ARDUINO_BPS = 9600
-MOTOR_MAX_MOVE = 1e6
+MOTOR_MAX_MOVE = 6000
+MAX_X_POS = 6000
+MAX_Y_POS = 4700
 ARDUINO_GOOD_RESP = "ok"
 ARDUINO_BAD_RESP = "bad"

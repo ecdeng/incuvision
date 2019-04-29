@@ -31,14 +31,13 @@ class MotorController:
     # Send command to arduino and return the response
     def exec_cmd(self, command):
         self.ser.write(command.encode())
-        sleep(5)
         return self.ser.readline()
 
     def stop(self):
         self.ser.close()
 
 def main():
-    motor_controller = MotorController(const.COM_PORT, 9600)
+    motor_controller = MotorController(const.COM_PORT, const.ARDUINO_BPS)
     motor_controller.start()
     while True:
         motor_controller.exec_cmd('xf20000')
