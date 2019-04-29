@@ -37,7 +37,7 @@ class MotorController:
         self.ser.close()
 
 def main():
-    motor_controller = MotorController('/dev/ttyACM0', 9600)
+    motor_controller = MotorController(const.COM_PORT, const.ARDUINO_BPS)
     motor_controller.start()
     while True:
         motor_controller.exec_cmd('xf2000')
