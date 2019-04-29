@@ -1,6 +1,6 @@
 
 # routing constants
-COM_PORT = "com3"
+COM_PORT = "/dev/ttyACM0"
 CON_ROUTE = "connect"
 MOVE_ROUTE = "server_move_request"
 DISCONNECT_ROUTE = "disconnect"
@@ -9,7 +9,7 @@ ARDUINO_MOVE_RESPONSE_ROUTE = "arduino_move_response"
 # socket communication paramaters (dictionary keys)
 CURR_POINT_PARAM = "curr"
 NEW_POINT_PARAM = "new"
-SERVER_ADDRESS = "http://127.0.0.1:5000"
+SERVER_ADDRESS = "http://incuvision-webserver.herokuapp.com"
 INVALID_POINT_ERROR = "Error: Invalid point"
 INVALID_MESSAGE_ERROR = "Error: Invalid Message"
 OUT_OF_SYNC_ERROR = "Error: Current point is out of sync with the linux server"
