@@ -1,5 +1,7 @@
+import cv2
 import com_handler_constants as const
 from motor_controller import MotorController
+import matplotlib.pyplot as plt
 
 def str_to_tuple(s):
     point_str = s.strip()[1:-1].split(',')
@@ -45,11 +47,22 @@ def main():
     motor_controller = MotorController(const.COM_PORT, const.ARDUINO_BPS)
     motor_controller.start()
     while True:
-        point = getPoint()
-        xcmd = 'xf' + point[0] if point[0] >= 0 else 'xb' + abs(point[0])
-        ycmd = 'yf' + point[1] if point[1] >= 0 else 'yb' + abs(point[1])
-        motor_controller.exec_cmd(xcmd)
-        motor_controller.exec_cmd(ycmd)
-        
+        cmd = input("enter m for move or p to take picture (m/p)")
+        if cmd == 'm':
+            point = getPoint()
+            xcmd = 'xf' + point[0] if point[0] >= 0 else 'xb' + abs(point[0])
+            ycmd = 'yf' + point[1] if point[1] >= 0 else 'yb' + abs(point[1])
+            motor_controller.exec_cmd(xcmd)
+            motor_controller.exec_cmd(ycmd)
+        elif cmd == 'p':
+            video_capture = cv2.VideoCapture(0)
+            if not video_capture.isOpened():
+                print("Error could not open video capture")
+            else:
+                ret, frame = video_capture.read()
+                frame = frame[:,:,::-1]
+                plt.imshow(frame)
+                video_capture.release()
+                
 if __name__ == '__main__':
     main()
