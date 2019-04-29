@@ -26,7 +26,7 @@ class ImagesPage extends React.Component {
 
 	render() {
 		const { images, filter } = this.state;
-		const filteredImages = images.filter(image => image.name.indexOf(filter) != -1);
+		const filteredImages = images.filter(image => image.name.indexOf(filter) !== -1);
 		// const filteredImages = images;
 		return (
 			<div className="imagesPage">
@@ -35,7 +35,7 @@ class ImagesPage extends React.Component {
 				<input type="text" name="filter" placeholder="Search..." onChange={this.handleFilterChange}/>
 				<ul className="imageList">
 					{(filteredImages.length > 0) && filteredImages.map((image) => (
-						<li className="imageListItem">
+						<li key={image.imageId} className="imageListItem">
 							<img src={image.filepath} alt={image.name} />
 							<div className="textArea">
 								<p>{image.name}</p>

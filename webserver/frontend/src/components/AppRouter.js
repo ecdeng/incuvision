@@ -7,6 +7,7 @@ import NewExperimentPage from './NewExperimentPage';
 import { BrowserRouter as Router, Redirect, Route, NavLink, Switch } from "react-router-dom";
 import PrivateRoute from './PrivateRoute';
 import LoginPage from "./LoginPage";
+import ImagesPage from "./ImagesPage";
 
 const authenticate = () => {
 	return (localStorage.getItem("authenticated") === "true");
@@ -26,6 +27,10 @@ function IndivudalExperiment({ match }) {
 
 function NewExperiment() {
 	return <NewExperimentPage />;
+}
+
+function Images() {
+	return <ImagesPage />;
 }
 
 class AppRouter extends React.Component {
@@ -48,6 +53,9 @@ class AppRouter extends React.Component {
 							<NavLink exact
 								activeClassName="active"
 								to="/new-experiment/"><li> New Experiment </li></NavLink>
+							<NavLink exact
+								activeClassName="active"
+								to="/images/"><li> Image Archives </li></NavLink>
 						</ul>
 					</nav>
 					<Switch>
@@ -57,6 +65,7 @@ class AppRouter extends React.Component {
 						<PrivateRoute redirect="/login" authMethod={authenticate} exact path="/experiments/" component={Experiments} />
 						<PrivateRoute redirect="/login" authMethod={authenticate} exact path="/new-experiment/" component={NewExperiment} />
 						<PrivateRoute redirect="/login" authMethod={authenticate} exact path="/experiments/:experimentId" component={IndivudalExperiment} />
+						<PrivateRoute redirect="/login" authMethod={authenticate} exact path="/images" component={Images} />
 						<PrivateRoute redirect="/login" authMethod={authenticate} exact path="/logout" component={Logout} />
 
 						<Route path="/" render={(props) => <h2 className="fourohfour">Uh oh! This page could not be found!</h2>} />
