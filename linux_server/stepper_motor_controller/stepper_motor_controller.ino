@@ -12,8 +12,8 @@ Stepper stepperY(200, 8, 9);
 
 void setup() {
   // set the speed at x rpm:
-  stepperX.setSpeed(300);
-  stepperY.setSpeed(300);
+  stepperX.setSpeed(50);
+  stepperY.setSpeed(50);
   
   // initialize the serial port:
   Serial.begin(9600);
