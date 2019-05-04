@@ -1,6 +1,6 @@
-import cv2
 import com_handler_constants as const
 from motor_controller import MotorController
+from VideoCapture import Device
 import matplotlib.pyplot as plt
 
 def str_to_tuple(s):
@@ -55,14 +55,11 @@ def main():
             motor_controller.exec_cmd(xcmd)
             motor_controller.exec_cmd(ycmd)
         elif cmd == 'p':
-            video_capture = cv2.VideoCapture(0)
+            cam = Device()
             if not video_capture.isOpened():
                 print("Error could not open video capture")
             else:
-                ret, frame = video_capture.read()
-                frame = frame[:,:,::-1]
-                plt.imshow(frame)
-                video_capture.release()
+                cam.saveSnapshot("cell_img.jpg")
                 
 if __name__ == '__main__':
     main()
