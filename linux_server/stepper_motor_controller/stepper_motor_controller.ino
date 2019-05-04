@@ -6,15 +6,7 @@ String com;
 String line1;
 String line2;
 
-// initialize the stepper library on appropriate pins
-Stepper stepperX(200, 3, 4);
-Stepper stepperY(200, 8, 9);
-
 void setup() {
-  // set the speed at x rpm:
-  stepperX.setSpeed(50);
-  stepperY.setSpeed(50);
-  
   // initialize the serial port:
   Serial.begin(9600);
 }
@@ -26,6 +18,14 @@ void loop() {
     line1 = com.substring(0, 2);
     line2 = com.substring(2, 7);
     inputtime = line2.toInt();
+
+    // initialize the stepper library on appropriate pins
+    Stepper stepperX(200, 3, 4);
+    Stepper stepperY(200, 8, 9);
+
+    // set the speed at x rpm:
+    stepperX.setSpeed(50);
+    stepperY.setSpeed(50);
 
     if(line1=="xf") {
       // rotate motor X clockwise by inputtime

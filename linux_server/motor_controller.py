@@ -1,4 +1,5 @@
 import serial
+import com_handler_constants as const
 from time import sleep
 
 class MotorController:
