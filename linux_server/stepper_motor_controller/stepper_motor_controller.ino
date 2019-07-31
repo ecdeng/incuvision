@@ -13,19 +13,18 @@ void setup() {
 
 void loop() {
   if(Serial.available() > 0) {
+    // initialize the stepper library on appropriate pins
+    Stepper stepperX(200, 3, 4);
+    Stepper stepperY(200, 8, 9);
+
+    stepperX.setSpeed(50);
+    stepperY.setSpeed(50);
+    
     // reading the incoming byte:
     com = Serial.readString();
     line1 = com.substring(0, 2);
     line2 = com.substring(2, 7);
     inputtime = line2.toInt();
-
-    // initialize the stepper library on appropriate pins
-    Stepper stepperX(200, 3, 4);
-    Stepper stepperY(200, 8, 9);
-
-    // set the speed at x rpm:
-    stepperX.setSpeed(50);
-    stepperY.setSpeed(50);
 
     if(line1=="xf") {
       // rotate motor X clockwise by inputtime
